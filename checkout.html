@@ -98,11 +98,11 @@
                 brandName: "MX3 Coffee Mix",
                 title: "Complete Your MX3 Coffee Mix Order",
                 description: "Start your day right with MX3 Coffee Mix—an easy-to-enjoy, low-acid coffee packed with beneficial nutrients like Vitamin C, Calcium, and Mangosteen.",
-                metaPixelId: "9040427422730750",
-                conversionApiToken: "EAAgZBZCJBbGTQBOxQDb4cHYqP3P5rctdZB5YYKKHmUF7opXKaGwshnQXDD0twqGgZCVk0vxwv19XbbPOrbZCIHUjgDZCAGaftMZBoleXkdTZACcjV84uabUNG3UJZB3uMZCvMet9UvpKOSwx1Bc8hHuOFzVtaJ3I31t7BcZCexCeoot37VLCmOe3TgP5V80FAAMYQmZANQZDZD",
+                metaPixelId: "659489116403208",
+                conversionApiToken: "EAAQpoJCdRZAoBO8iZCDRtcYkKZC8ZCXI2rKnVLqZBxjepSIzt16Vj41T8n7jgoooAasMWVGqchRQT6gExeXblEuCdvCKtT3gGqZB6FZArkwlPyCUQOEnrBYqoC4Hk5z9eYuIaxislRAkzjhGBHSUPPMcnECL5EpD48WbeTbwZAMnhhMRZBBZAjZAHSVq1SzC9a2uAZDZD",
                 thankyouUrl: "./thankyou.html",
-                sheet_id: "1K2D1C8fgz2tM6MT5rVisT-8BTeT-Ri6Q7i3Glqiq7Mo",
-                sheet_name: "MX3Orders",
+                sheet_id: "1xRhP52xzD0w-IVdcV5c9VT4gjVlxTwxKMZWbVw4h0Rk",
+                sheet_name: "Sheet1",
                 value: amount,
                 currency: "PHP",
                 requireEmail: false,
@@ -111,7 +111,7 @@
                 businessName: "MX3 Philippines",
                 businessEmail: "support@mx3.ph",
                 businessPhone: "639561301775",
-                senderId: "MX3",
+                senderId: "MX3PH.COM",
             }
 
             // Configuration object for form fields
@@ -190,6 +190,20 @@
                             return data;
                         }, {}),
                         payment_method: "cod",
+                        order: bundle,
+                        amount: amount,
+                    },
+                    productList: {
+                        "5-boxes": {
+                            price: 800,
+                            quantity: 5,
+                            name: "5-boxes of MX3 Coffee Mix"
+                        },
+                        "capsule coffee": {
+                            price: 100,
+                            quantity: 1,
+                            name: "1 Box of MX3 Capsule + 1 Box of MX3 Coffee Mix"
+                        }
                     },
                     barangays: [],
                     meiliSearch: null,
@@ -331,6 +345,14 @@
                         if (parts.length === 2) return parts.pop().split(";").shift();
                         return null;
                     },
+                    formatToPeso(amount) {
+                        return new Intl.NumberFormat('en-PH', {
+                            style: 'currency',
+                            currency: 'PHP',
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }).format(amount);
+                    },
                     async finalizeSubmission() {
                         this.isLoading = true;
                         await this.reportConversion("InitiateCheckout");
@@ -370,10 +392,12 @@
 
                         const loader = document.getElementById("loader");
                         loader.style.display = "flex";
+                        this.saveFormInputs();
                         fetch(this.config.apiHost + "/cform_handle_submit", requestOptions)
                             .then((response) => response.json())
                             .then(async (data) => {
                                 console.log(data);
+                                loader.style.display = "none"
                                 console.log("Submitting form:", JSON.parse(raw));
                                 if (data.status) {
                                     this.submitStatus = "success";
@@ -384,7 +408,6 @@
                                 } else {
                                     this.submitStatus = "failed";
                                 }
-                                this.saveFormInputs();
                                 return data;
                             })
                             .catch((error) => {
@@ -393,13 +416,6 @@
                                 }, 1000);
                                 console.error("Error submitting form:", error);
                             })
-                            .finally((data) => {
-                                this.isLoading = false;
-                                setTimeout(() => {
-                                    loader.style.display = "none";
-                                }, 1000);
-                                console.log("Form Submitted", data);
-                            });
                     },
                     saveFormInputs() {
                         localStorage.setItem("formData", JSON.stringify(this.formData));
@@ -617,6 +633,8 @@
                             return;
                         }
                         this.isOTPLoading = true;
+                        const loader = document.getElementById("loader");
+                        loader.style.display = "flex";
                         fetch(
                             this.config.apiHost +
                             `/cform_verify_otp?cache_key=${this.otpCacheKey}&otp=${otp}`
@@ -625,6 +643,7 @@
                             .then((data) => {
                                 const { status, verification_token } = data;
                                 if (!status) {
+                                    loader.style.display = "none";
                                     alert("Invalid OTP. Please try again.");
                                     this.isOTPLoading = false;
                                     this.otpValidated = false;
@@ -719,7 +738,6 @@
                             this.isBarangaySearchLoading = false;
                         }
                     }, 300),
-
                     getCities: debounce(function () {
                         if (this.formData.city && this.formData.city.length > 1) {
                             this.isCitySearchLoading = true;
@@ -757,7 +775,6 @@
                             this.isCitySearchLoading = false;
                         }
                     }, 300),
-
                     getProvinces: debounce(function () {
                         if (this.formData.province && this.formData.province.length > 1) {
                             this.isProvinceSearchLoading = true;
@@ -906,7 +923,7 @@
                                 this.showProvinceDropdown = false;
                             }
                         });
-                        
+
                         // Setup keyboard event listeners for Escape key
                         document.addEventListener('keydown', (event) => {
                             if (event.key === 'Escape') {
@@ -1020,7 +1037,7 @@
                             <span class="text-xs italic text-gray-400">Example: john@gmail.com</span>
                         </div>
                         <div class="col-span-full">
-                            <label :class="isValidating && !formData.streetAddress ? 'text-red-500': ''" for="streetAddress" class="block text-sm font-medium text-gray-700">Street Address <span class="text-xs italic text-gray-400">(Required)</span></label>
+                            <label :class="isValidating && !formData.streetAddress ? 'text-red-500': ''" for="streetAddress" class="block text-sm font-medium text-gray-700">House Number/Building Number + Street Address <span class="text-xs italic text-gray-400">(Required)</span></label>
                             <input required @input="isValidating=false" :class="isValidating && !formData.streetAddress ? 'ring-2 ring-red-500': ''" v-model="formData.streetAddress" type="text" id="streetAddress" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md" autocomplete="street-address">
                         </div>
 
@@ -1184,7 +1201,7 @@
                     </form>
                     <!-- Fixed Submit Button -->
                     <div @click="submitForm" class="fixed md:relative bottom-0 w-full py-4 px-6 left-0 right-0 flex items-center justify-center">
-                        <button submit type="button" id="submitButton" class="w-full md:max-w-sm space-x-2 text-white flex items-center justify-center text-lg py-3 px-6 rounded-md bg-gradient-to-r from-[#e63b60] to-[#ff6b4d] hover:from-[#e63b60] hover:to-[#ff5a3a] focus:outline-none focus:ring-4 focus:ring-pink-500">
+                        <button submit type="button" id="submitButton" class="w-full md:max-w-sm space-x-2 text-white flex items-center justify-center text-lg py-3 px-6 rounded-md bg-gradient-to-r from-[#e63b60] to-[#ff6b4d] hover:from-[#e63b60] hover:to-[#ff5a3a] focus:outline-none focus:ring-4 focus:ring-pink-500 shadow-lg">
                             <span>Place Your Order</span>
                             <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
@@ -1206,19 +1223,18 @@
                         <h2 class="text-2xl font-bold text-center mb-4">Confirm Your Details</h2>
                         <div class="w-full border-t border-gray-300 my-5"></div>
                         <ul class="space-y-2">
-                            <li><strong>First Name:</strong> {{ formData.firstName }}</li>
-                            <li><strong>Last Name:</strong> {{ formData.lastName }}</li>
+                            <li><strong>Order:</strong> {{ productList?.[formData.order]?.name || "" }}</li>
+                            <li><strong>Amount:</strong> {{ formatToPeso(formData.amount) }}</li>
+                            <li><strong>Name:</strong> {{ formData.firstName }} {{ formData.lastName }}</li>
                             <li><strong>Phone Number:</strong> {{ formData.phone }}</li>
                             <li><strong>Email:</strong> {{ formData.email }}</li>
-                            <!-- Other fields here -->
-                            <li v-for="field of Object.keys(formData).filter(key => formConfig.some(f => f.id === key) && key !== 'firstName' && key !== 'lastName' && key !== 'phone' && key !== 'email')" class="capitalize">
-                                <strong>{{ formConfig.find(f => f.id === field)?.label || "" }}:</strong> {{ formData[field] }}
-                            </li>
+                            <li><strong>Address:</strong> {{ formData.streetAddress }}, {{ formData.barangay }}, {{ formData.city }}, {{ formData.province }} {{ formData["zip-code"] }}</li>
+                            <li><strong>Payment Method:</strong> {{ formData.payment_method }}</li>
                         </ul>
                     </div>
                     <div class="w-full bg-white rounded-lg shadow-md p-6 max-w-md mx-auto">
                         <div class="mt-6 flex items-center justify-center space-x-2">
-                            <button @click="isConfirmationVisible = false" class="bg-gray-300 py-2 px-4 rounded-md hover:bg-gray-400 flex items-center space-x-2">
+                            <button @click="isConfirmationVisible = false" class="py-2 px-4 rounded-md bg-gradient-to-r from-gray-300 to-gray-400 hover:from-gray-400 hover:to-gray-500 flex items-center space-x-2 text-gray-700 shadow-md">
                                 <div class="h-4 w-4">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
                                         <path d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z" />
@@ -1227,9 +1243,9 @@
                                 <span>Edit</span>
                             </button>
                             <button :disabled="isOTPLoading" @click="sendOTP" :class="
-                                'w-full bg-indigo-600 py-2 px-4 rounded-md text-white text-2xl shadow-md flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-400'
+                                'w-full py-2 px-4 rounded-md text-white text-2xl shadow-md flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed disabled:bg-gray-400'
                                 +
-                                (!agreeToTerms ? 'opacity-50 cursor-not-allowed bg-gray-400 hover:bg-gray-400' : 'hover:bg-indigo-700')
+                                (!agreeToTerms ? ' opacity-50 cursor-not-allowed bg-gray-400' : ' bg-gradient-to-r from-[#e63b60] to-[#ff6b4d] hover:from-[#e63b60] hover:to-[#ff5a3a]')
                             ">
                                 <span v-if="isOTPLoading">Sending OTP...</span>
                                 <span v-else>Confirm Details</span>
@@ -1241,7 +1257,7 @@
                             </div>
                             <p class="text-[9px] text-gray-600">
                                 I hereby certify that the information is true and given voluntarily. click this link for more information
-                                The parties agree to comply with, and have adequate measures in place to ensure that its directors, officers, employees, and Representatives comply at all times with: (a) the provisions and obligations contained in Republic Act No. 10173 or the “Data Privacy Act of the Philippines” and its implementing rules and regulations, and (b) other applicable data privacy laws and regulations, as may be promulgated and/or amended from time to time. By agreeing to execute and enter into this Agreement, the parties agree that any information exchanged between them may be collected, processed, shared and used but only for purposes relevant to the Transaction. Each of the parties agrees to hold the other free and harmless from any costs or liability arising from its failure to comply with the requirements of the Data Privacy Act of the Philippines. <a class="text-blue-500 underline" href="https://drive.google.com/file/d/1fpTgh_FdxBLubJW-PCl5yOJrFkJ2D4Fs/view" target="_blank">(UNC Data Privacy Consent)</a>)
+                                The parties agree to comply with, and have adequate measures in place to ensure that its directors, officers, employees, and Representatives comply at all times with: (a) the provisions and obligations contained in Republic Act No. 10173 or the “Data Privacy Act of the Philippines” and its implementing rules and regulations, and (b) other applicable data privacy laws and regulations, as may be promulgated and/or amended from time to time. By agreeing to execute and enter into this Agreement, the parties agree that any information exchanged between them may be collected, processed, shared and used but only for purposes relevant to the Transaction. Each of the parties agrees to hold the other free and harmless from any costs or liability arising from its failure to comply with the requirements of the Data Privacy Act of the Philippines. <a class="text-blue-500 underline" href="https://mx3.shop/pages/privacy-policy" target="_blank">(MX3 Data Privacy Consent)</a>)
                             </p>
                         </div>
                     </div>
@@ -1267,7 +1283,7 @@
                         <p class="text-xs text-gray-600">OTP expires in 5 minutes</p>
                     </div>
                     <div class="mt-6 flex flex-col space-y-2">
-                        <button :disabled="isOTPLoading" @click="verifyOTP" class="bg-indigo-600 py-2 px-4 rounded-md text-white hover:bg-indigo-700 text-2xl shadow-md flex items-center justify-center">
+                        <button :disabled="isOTPLoading" @click="verifyOTP" class="bg-gradient-to-r from-[#e63b60] to-[#ff6b4d] hover:from-[#e63b60] hover:to-[#ff5a3a] py-2 px-4 rounded-md text-white text-2xl shadow-md flex items-center justify-center">
                             <span v-if="isOTPLoading">Verifying OTP...</span>
                             <span v-else>Verify OTP & Submit</span>
                         </button>
@@ -1310,7 +1326,7 @@
                     </form>
                     <!-- Fixed Submit Button -->
                     <div class="fixed md:relative bottom-0 w-full py-4 px-6 left-0 right-0 flex items-center justify-center">
-                        <button submit type="button" id="submitButton" class="w-full md:max-w-sm space-x-2 text-white flex items-center justify-center text-lg py-3 px-6 rounded-md bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-4 focus:ring-indigo-500">
+                        <button submit type="button" id="submitButton" class="w-full md:max-w-sm space-x-2 text-white flex items-center justify-center text-lg py-3 px-6 rounded-md bg-gradient-to-r from-[#e63b60] to-[#ff6b4d] hover:from-[#e63b60] hover:to-[#ff5a3a] focus:outline-none focus:ring-4 focus:ring-pink-500 shadow-lg">
                             <span>Continue</span>
                             <div class="h-4 w-4 text-white">
                                 <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
