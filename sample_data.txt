@@ -1,0 +1,9 @@
+PSGC	Name	Correspondence Code	Geographic Level
+1300000000	National Capital Region (NCR)	130000000	Reg
+1380100000	City of Caloocan	137501000	City
+1380100001	Barangay 1	137501001	Bgy
+1380100002	Barangay 2	137501002	Bgy
+1380100003	Barangay 3	137501003	Bgy
+1380100004	Barangay 4	137501004	Bgy
+1380100005	Barangay 5	137501005	Bgy
+1380100006	Barangay 6	137501006	Bgy
