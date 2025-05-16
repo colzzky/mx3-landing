@@ -906,6 +906,16 @@
                                 this.showProvinceDropdown = false;
                             }
                         });
+                        
+                        // Setup keyboard event listeners for Escape key
+                        document.addEventListener('keydown', (event) => {
+                            if (event.key === 'Escape') {
+                                // Close all dropdowns when Escape is pressed
+                                this.showBarangayDropdown = false;
+                                this.showCityDropdown = false;
+                                this.showProvinceDropdown = false;
+                            }
+                        });
                     },
                     mounted() {
                         this.globalEventId = Math.random().toString(36).substring(2, 15);
@@ -1018,7 +1028,7 @@
                         <div class="col-span-full">
                             <label :class="isValidating && !formData.barangay ? 'text-red-500': ''" for="barangay" class="block text-sm font-medium text-gray-700">Barangay <span class="text-xs italic text-gray-400">(Required)</span></label>
                             <div class="relative w-full">
-                                <input required @input="getBarangays(), isValidating=false" @focus="showBarangayDropdown = true" :class="isValidating && !formData.barangay ? 'ring-2 ring-red-500': ''" v-model="formData.barangay" type="text" id="barangay" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md" autocomplete="address-level2" placeholder="Search for your barangay">
+                                <input required @input="getBarangays(), isValidating=false" @focus="showBarangayDropdown = true" @keydown.esc="showBarangayDropdown = false" @blur="setTimeout(() => showBarangayDropdown = false, 200)" :class="isValidating && !formData.barangay ? 'ring-2 ring-red-500': ''" v-model="formData.barangay" type="text" id="barangay" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md" autocomplete="address-level2" placeholder="Search for your barangay">
                                 <!-- Loading indicator positioned inside input at the right -->
                                 <div v-if="isBarangaySearchLoading" class="absolute right-3 top-1/2 transform -translate-y-1/2">
                                     <div class="w-5 h-5 border-2 border-gray-300 border-t-[#e63b60] rounded-full animate-spin"></div>
@@ -1051,7 +1061,7 @@
                         <div class="col-span-full">
                             <label :class="isValidating && !formData.city ? 'text-red-500': ''" for="city" class="block text-sm font-medium text-gray-700">City <span class="text-xs italic text-gray-400">(Required)</span></label>
                             <div class="relative w-full">
-                                <input required @input="getCities(), isValidating=false" @focus="showCityDropdown = true" :class="isValidating && !formData.city ? 'ring-2 ring-red-500': ''" v-model="formData.city" type="text" id="city" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md" autocomplete="address-level2" placeholder="Search for your city">
+                                <input required @input="getCities(), isValidating=false" @focus="showCityDropdown = true" @keydown.esc="showCityDropdown = false" @blur="setTimeout(() => showCityDropdown = false, 200)" :class="isValidating && !formData.city ? 'ring-2 ring-red-500': ''" v-model="formData.city" type="text" id="city" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md" autocomplete="address-level2" placeholder="Search for your city">
                                 <!-- Loading indicator positioned inside input at the right -->
                                 <div v-if="isCitySearchLoading" class="absolute right-3 top-1/2 transform -translate-y-1/2">
                                     <div class="w-5 h-5 border-2 border-gray-300 border-t-[#e63b60] rounded-full animate-spin"></div>
@@ -1084,7 +1094,7 @@
                         <div class="col-span-full">
                             <label :class="isValidating && !formData.province ? 'text-red-500': ''" for="province" class="block text-sm font-medium text-gray-700">Province <span class="text-xs italic text-gray-400">(Required)</span></label>
                             <div class="relative w-full">
-                                <input required @input="getProvinces(), isValidating=false" @focus="showProvinceDropdown = true" :class="isValidating && !formData.province ? 'ring-2 ring-red-500': ''" v-model="formData.province" type="text" id="province" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md" autocomplete="address-level1" placeholder="Search for your province">
+                                <input required @input="getProvinces(), isValidating=false" @focus="showProvinceDropdown = true" @keydown.esc="showProvinceDropdown = false" @blur="setTimeout(() => showProvinceDropdown = false, 200)" :class="isValidating && !formData.province ? 'ring-2 ring-red-500': ''" v-model="formData.province" type="text" id="province" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md" autocomplete="address-level1" placeholder="Search for your province">
                                 <!-- Loading indicator positioned inside input at the right -->
                                 <div v-if="isProvinceSearchLoading" class="absolute right-3 top-1/2 transform -translate-y-1/2">
                                     <div class="w-5 h-5 border-2 border-gray-300 border-t-[#e63b60] rounded-full animate-spin"></div>
