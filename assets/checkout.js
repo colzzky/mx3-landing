@@ -33,7 +33,7 @@ function debounce(func, wait, immediate = false) {
 
 document.addEventListener("DOMContentLoaded", () => {
     if (!window.CSFORM_CONFIG) {
-        console.error(
+        console.info(
             "CSFORM_CONFIG is not defined. Please define the configuration object before loading the form script."
         );
         return;
@@ -71,8 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 return data;
             }, {}),
             payment_method: "cod",
-            order: bundle,
-            amount: amount,
             quantity: 1,
         },
         productList: {
@@ -267,6 +265,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const raw = JSON.stringify({
                 data: {
                     ...this.formData,
+                    order: this.productList?.[this.formData.order]?.name || this.formData.order
                 },
                 conversionApi: this.buildPayload(),
                 metaPixelId: this.config.metaPixelId,
@@ -299,9 +298,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (data.status) {
                         this.submitStatus = "success";
                         await this.reportConversion("Purchase");
-                        if (this.config.thankyouUrl) {
-                            window.location.href = this.config.thankyouUrl;
-                        }
+                        // Redirect to upsell page instead of thank you page
+                        window.location.href = "./upsell.html?" + new URLSearchParams(this.formData).toString();
                     } else {
                         this.submitStatus = "failed";
                     }
@@ -313,6 +311,100 @@ document.addEventListener("DOMContentLoaded", () => {
                     }, 1000);
                     console.error("Error submitting form:", error);
                 })
+        },
+        async submitUpsell({upsellProduct, upsellAmount}) {
+            try {
+
+                console.log({upsellProduct, upsellAmount});
+                
+                // Get URL parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                
+                // Keep track of original order information
+                for (const [key, value] of urlParams) {
+                    this.formData[key] = value;
+                }
+
+                // Track purchase event for upsell
+                if (window.fbq) {
+                    window.fbq('track', 'Purchase', {
+                        content_name: upsellProduct,
+                        content_type: 'product',
+                        value: upsellAmount,
+                        currency: 'PHP'
+                    });
+                }
+
+                // Show loading spinner
+                const loader = document.getElementById("loader");
+                if (loader) loader.style.display = "flex";
+
+                // Report conversion
+                await this.reportConversion("Purchase");
+
+                // Prepare API call
+                const myHeaders = new Headers();
+                myHeaders.append("Content-Type", "application/json");
+
+                // Get URL parameters
+                const allQueryParams = new URLSearchParams(window.location.search);
+                const allQueryParamsJson = {};
+                for (const [key, value] of allQueryParams) {
+                    allQueryParamsJson[key] = value;
+                }
+
+                const raw = JSON.stringify({
+                    data: {
+                        ...this.formData,
+                        order: upsellProduct,
+                        quantity: 1,
+                        total: upsellAmount,
+                    },
+                    conversionApi: this.buildPayload("Purchase"),
+                    metaPixelId: this.config.metaPixelId,
+                    conversionApiToken: this.config.conversionApiToken,
+                    params: allQueryParamsJson,
+                    sheet_id: this.config.sheet_id,
+                    sheet_name: this.config.sheet_name,
+                    businessEmail: this.config.businessEmail,
+                    businessPhone: this.config.businessPhone,
+                    businessName: this.config.businessName,
+                });
+
+                const requestOptions = {
+                    method: "POST",
+                    headers: myHeaders,
+                    body: raw,
+                    redirect: "follow",
+                };
+
+                // Submit form
+                return fetch(this.config.apiHost + "/cform_handle_submit", requestOptions)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log("Upsell response:", data);
+                        if (loader) loader.style.display = "none";
+
+                        if (data.status) {
+                            // Redirect to thank you page with added parameter
+                            window.location.href = "./thankyou.html?added=true";
+                        } else {
+                            // Still redirect even if there's an error
+                            window.location.href = "./thankyou.html?added=true";
+                        }
+                        return data;
+                    })
+                    .catch((error) => {
+                        console.error("Error submitting upsell:", error);
+                        if (loader) loader.style.display = "none";
+                        // Redirect anyway
+                        window.location.href = "./thankyou.html?added=true";
+                    });
+            } catch (error) {
+                console.error("Upsell error:", error);
+                // Redirect to thank you page even if error
+                window.location.href = "./thankyou.html?added=true";
+            }
         },
         saveFormInputs() {
             localStorage.setItem("formData", JSON.stringify(this.formData));
@@ -847,9 +939,10 @@ document.addEventListener("DOMContentLoaded", () => {
             fbq("init", this.config.metaPixelId);
             fbq("track", "PageView");
             this.meiliSearch = this.initMeiliSearch();
-            console.log({
-                formData: this.formData,
-            });
+            const urlParams = new URLSearchParams(window.location.search);
+            for (const [key, value] of urlParams) {
+                this.formData[key] = value;
+            }
         },
     }).mount("#app");
 });
