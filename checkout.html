@@ -121,12 +121,13 @@
                     type: "text",
                     label: "Zip Code",
                     placeholder: "Please provide your zip code",
-                    required: true,
+                    required: false,
                 },
                 {
                     id: "payment_method",
                     type: "radio",
                     label: "Payment Method",
+                    description: "We use LBC and JnT couriers for delivery",
                     placeholder: "",
                     required: true,
                     options: [
@@ -188,6 +189,7 @@
                             data[field.id] = "";
                             return data;
                         }, {}),
+                        payment_method: "cod",
                     },
                     barangays: [],
                     meiliSearch: null,
@@ -998,12 +1000,12 @@
                             <input required @input="isValidating=false" :class="isValidating && !formData.lastName ? 'ring-2 ring-red-500': ''" v-model="formData.lastName" type="text" id="lastName" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md" autocomplete="family-name">
                         </div>
                         <div class="col-span-full">
-                            <label :class="isValidating && !formData.phone ? 'text-red-500': ''" for="phone" class="block text-sm font-medium text-gray-700">Phone Number <span v-if="config.requirePhone" class="text-xs italic text-gray-400">(Required)</span></label>
+                            <label :class="isValidating && !formData.phone && config.requirePhone ? 'text-red-500': ''" for="phone" class="block text-sm font-medium text-gray-700">Phone Number <span v-if="config.requirePhone" class="text-xs italic text-gray-400">(Required)</span></label>
                             <input :required="config.requirePhone" @input="isValidating=false,isPhoneInvalid=false" :class="isValidating && (!formData.phone || isPhoneInvalid) && config.requirePhone ? 'ring-2 ring-red-500': ''" placeholder="E.g. 09473212211" v-model="formData.phone" type="text" id="phone" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md" autocomplete="tel">
                             <span class="text-xs italic text-gray-400">Example: 09172221111</span>
                         </div>
                         <div class="col-span-full">
-                            <label :class="isValidating && !formData.email ? 'text-red-500': ''" for="email" class="block text-sm font-medium text-gray-700">Email <span v-if="config.requireEmail" class="text-xs italic text-gray-400">(Required)</span></label>
+                            <label :class="isValidating && !formData.email && config.requireEmail ? 'text-red-500': ''" for="email" class="block text-sm font-medium text-gray-700">Email <span v-if="config.requireEmail" class="text-xs italic text-gray-400">(Required)</span></label>
                             <input :required="config.requireEmail" @input="isValidating=false,isEmailInvalid=false" :class="isValidating && (!formData.email || isEmailInvalid) && config.requireEmail ? 'ring-2 ring-red-500': ''" placeholder="E.g. john@gmail.com" v-model="formData.email" type="email" id="email" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md" autocomplete="email">
                             <span class="text-xs italic text-gray-400">Example: john@gmail.com</span>
                         </div>
@@ -1046,7 +1048,7 @@
                         </div>
 
                         <!-- City Search Field -->
-                        <div class="col-span-1">
+                        <div class="col-span-full">
                             <label :class="isValidating && !formData.city ? 'text-red-500': ''" for="city" class="block text-sm font-medium text-gray-700">City <span class="text-xs italic text-gray-400">(Required)</span></label>
                             <div class="relative w-full">
                                 <input required @input="getCities(), isValidating=false" @focus="showCityDropdown = true" :class="isValidating && !formData.city ? 'ring-2 ring-red-500': ''" v-model="formData.city" type="text" id="city" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md" autocomplete="address-level2" placeholder="Search for your city">
@@ -1079,7 +1081,7 @@
                         </div>
 
                         <!-- Province Search Field -->
-                        <div class="col-span-1">
+                        <div class="col-span-full">
                             <label :class="isValidating && !formData.province ? 'text-red-500': ''" for="province" class="block text-sm font-medium text-gray-700">Province <span class="text-xs italic text-gray-400">(Required)</span></label>
                             <div class="relative w-full">
                                 <input required @input="getProvinces(), isValidating=false" @focus="showProvinceDropdown = true" :class="isValidating && !formData.province ? 'ring-2 ring-red-500': ''" v-model="formData.province" type="text" id="province" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md" autocomplete="address-level1" placeholder="Search for your province">
@@ -1115,6 +1117,7 @@
                                 {{ field.label }}
                                 <span v-if="field.required" class="text-xs italic text-red-500"> *</span>
                             </label>
+                            <p v-if="field.description" class="text-xs text-gray-600 italic">{{ field.description }}</p>
 
                             <!-- Standard input types: text, email, password, number, date, time, file -->
                             <template v-if="['text','email','password','number','date','time','color'].includes(field.type)">
