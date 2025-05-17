@@ -711,7 +711,30 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         getBarangays: debounce(function () {
             if (this.formData.barangay && this.formData.barangay.length > 1) {
-                this.isBarangaySearchLoading = false;
+                this.isBarangaySearchLoading = true;
+                this.showBarangayDropdown = true;
+                this.initMeiliSearch().search(this.formData.barangay).then((res) => {
+                    // Remove duplicates by city name
+                    const uniqueBarangays = [];
+                    const barangayNames = new Set();
+
+                    res.hits.forEach(hit => {
+                        if (!barangayNames.has(hit.brgy)) {
+                            barangayNames.add(hit.brgy);
+                            uniqueBarangays.push(hit);
+                        }
+                    });
+
+                    this.barangays = uniqueBarangays;
+                    this.isBarangaySearchLoading = false;
+                    // Initialize or update Popper after results are loaded
+                    this.$nextTick(() => {
+                        this.initPopper('barangay');
+                    });
+                }).catch(err => {
+                    console.error('Error searching barangays:', err);
+                    this.isBarangaySearchLoading = false;
+                });
             }
         }, 300),
         getCities: debounce(function () {
@@ -728,10 +751,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     res.hits.forEach(hit => {
                         if (!cityNames.has(hit.city_municipality)) {
                             cityNames.add(hit.city_municipality);
-                            uniqueCities.push({
-                                name: hit.city_municipality,
-                                province: hit.province || hit.region
-                            });
+                            uniqueCities.push(hit);
                         }
                     });
 
@@ -766,9 +786,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         const provinceName = hit.province || hit.region;
                         if (provinceName && !provinceNames.has(provinceName)) {
                             provinceNames.add(provinceName);
-                            uniqueProvinces.push({
-                                name: provinceName
-                            });
+                            uniqueProvinces.push(hit);
                         }
                     });
 
@@ -799,11 +817,8 @@ document.addEventListener("DOMContentLoaded", () => {
             document.dispatchEvent(event);
         },
         selectCity(city) {
-            this.formData.city = city.name;
-            // If the city has province info, update that field too
-            if (city.province) {
-                this.formData.province = city.province;
-            }
+            this.formData.city = city.city_municipality;
+            this.formData.province = city.province || city.region;
             this.showCityDropdown = false;
             const event = new CustomEvent('city-selected', {
                 detail: { city: city }
@@ -811,7 +826,7 @@ document.addEventListener("DOMContentLoaded", () => {
             document.dispatchEvent(event);
         },
         selectProvince(province) {
-            this.formData.province = province.name;
+            this.formData.province = province.province || province.region;
             this.showProvinceDropdown = false;
             const event = new CustomEvent('province-selected', {
                 detail: { province: province }
