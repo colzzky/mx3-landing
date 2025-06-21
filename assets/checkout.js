@@ -83,6 +83,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 price: 100,
                 quantity: 1,
                 name: "1 Box of MX3 Capsule + 1 Box of MX3 Coffee Mix"
+            },
+            "mx3-capsule-blister-pack": {
+                price: 850,
+                quantity: 5,
+                name: "5-boxes of MX3 Capsule Blister Pack"
             }
         },
         barangays: [],
