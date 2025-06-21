@@ -293,6 +293,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 businessEmail: this.config.businessEmail,
                 businessPhone: this.config.businessPhone,
                 businessName: this.config.businessName,
+                senderId: this.config.senderId,
             });
 
             const requestOptions = {
@@ -390,6 +391,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     businessEmail: this.config.businessEmail,
                     businessPhone: this.config.businessPhone,
                     businessName: this.config.businessName,
+                    senderId: this.config.senderId,
                 });
 
                 const requestOptions = {
