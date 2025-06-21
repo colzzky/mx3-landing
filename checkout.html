@@ -5,6 +5,44 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>MX3 Coffee Mix Checkout</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="robots" content="index, follow" />
+
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="description" content="MX3 is the leading natural food supplement brand in the Philippines. This remarkable supplement created a breakthrough in the Health well-being of every user.">
+        <meta name="title" content="MX3 | The Leading Natural Food Supplement in the Philippines">
+
+        <meta name="author" content="DMI Medical Supply Co., Inc.">
+        <meta name="keywords" content="mx3">
+        <meta name="copyright" content="MX3 Natural Supplements">
+        <meta name="application-name" content="DMI Medical Supply Co., Inc.">
+        <meta name="p:domain_verify" content="84eca4184f30e71c79c259557ace48c1" />
+        <link rel="alternate" href="https://www.mx3ph.com" hreflang="en-us" />
+        <link rel="shortcut icon" type="image/x-icon" href="https://www.mx3ph.com/public/img/mx3-logo.png">
+        <!--<meta http-equiv="Content-Security-Policy: script-src 'self'; img-src *;">-->
+
+        <!--Facebook Tags-->
+        <meta name="facebook-domain-verification" content="vcse4fenv5nrpgwh2gvgahiwn32tqd" />
+        <meta property="og:locale" content="en_US">
+        <meta property="og:site_name" content="MX3 Natural Supplements">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="MX3 | The Leading Natural Food Supplement in the Philippines">
+        <meta property="og:image" content="https://www.mx3ph.com/public/img/mx3-logo.png">
+        <meta property="og:image:width" content="700">
+        <meta property="og:image:height " content="500">
+        <meta property="fb:app_id" content="718406245016689" />
+        <meta property="og:description" content="MX3 is the leading natural food supplement brand in the Philippines. This remarkable supplement created a breakthrough in the Health well-being of every user.">
+        <meta property="og:url" content="https://www.mx3ph.com">
+        <meta property="article:author" content="https://www.facebook.com/MX3NaturalSupplements/">
+
+        <!--Twitter Tags-->
+        <meta name="twitter:card" content="summary">
+        <meta name="twitter:site" content="MX3 Natural Supplements">
+        <meta name="twitter:title" content="MX3 | The Leading Natural Food Supplement in the Philippines" />
+        <meta name="twitter:description" content="MX3 is the leading natural food supplement brand in the Philippines. This remarkable supplement created a breakthrough in the Health well-being of every user." />
+        <meta name="twitter:image" content="https://www.mx3ph.com/public/img/mx3-fb-logo.jpg" />
+
         <!--Favicon-->
         <link rel="icon" href="./assets/mx3-favicon.ico" type="image/x-icon" />
         <script src="https://cdn.jsdelivr.net/npm/petite-vue" defer></script>
@@ -13,6 +51,7 @@
         <script src="https://unpkg.com/@popperjs/core@2" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/meilisearch@0.50.0/dist/umd/index.min.js" defer></script>
         <script src="./assets/checkout.js" defer></script>
+        
         <!-- Meta Pixel Code -->
         <script>
             !function (f, b, e, v, n, t, s) {
@@ -133,7 +172,7 @@
                     <div class="w-full flex items-center justify-center relative mb-6">
                         <img src="./assets/mx3coffeefront_400x.webp" alt="MX3 Coffee Mix" class="logo mx-auto w-16 h-16 mb-4 rounded-full absolute -top-12 bg-white p-1">
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-800 text-center mb-2 capitalize">Complete Your MX3 Coffee Mix Order</h2>
+                    <h2 class="text-2xl font-bold text-gray-800 text-center mb-2 capitalize">Complete Your {{ chosenProduct }} Order</h2>
                     <p class="text-gray-600 text-center mb-6 text-xs">Start your day right with MX3 Coffee Mix—an easy-to-enjoy, low-acid coffee packed with beneficial nutrients like Vitamin C, Calcium, and Mangosteen.</p>
                     <div class="p-5 text-center w-16 h-16 rounded-full flex items-center justify-center text-white bg-red-700">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill="#fff">
@@ -149,7 +188,7 @@
                     <div class="w-full flex items-center justify-center relative mb-6">
                         <img src="./assets/mx3coffeefront_400x.webp" alt="MX3 Coffee Mix" class="logo mx-auto w-16 h-16 mb-4 rounded-full absolute -top-12 bg-white p-1">
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-800 text-center mb-2 capitalize">Complete Your MX3 Coffee Mix Order</h2>
+                    <h2 class="text-2xl font-bold text-gray-800 text-center mb-2 capitalize">Complete Your {{ chosenProduct }} Order</h2>
                     <p class="text-gray-600 text-center mb-6 text-xs">Start your day right with MX3 Coffee Mix—an easy-to-enjoy, low-acid coffee packed with beneficial nutrients like Vitamin C, Calcium, and Mangosteen.</p>
                     <div class="p-2 text-center w-16 h-16 rounded-full flex items-center justify-center text-white bg-green-700">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" stroke="#fff" fill="#fff">
@@ -166,7 +205,7 @@
                     <div class="w-full flex items-center justify-center relative mb-6">
                         <img src="./assets/mx3coffeefront_400x.webp" alt="MX3 Coffee Mix" class="logo mx-auto w-16 h-16 mb-4 rounded-full absolute -top-12 bg-white p-1">
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-800 text-center mb-2 capitalize">Complete Your MX3 Coffee Mix Order</h2>
+                    <h2 class="text-2xl font-bold text-gray-800 text-center mb-2 capitalize">Complete Your {{ chosenProduct }} Order</h2>
                     <p class="text-gray-600 text-center mb-6 text-xs">Start your day right with MX3 Coffee Mix—an easy-to-enjoy, low-acid coffee packed with beneficial nutrients like Vitamin C, Calcium, and Mangosteen.</p>
                     <div class="w-full border-t border-gray-300 my-5"></div>
                     <form id="leadForm" class="grid grid-cols-2 gap-4">
@@ -227,10 +266,10 @@
                         </div>
 
                         <!-- City Search Field -->
-                        <div class="col-span-full">
+                        <div class="col-span-full" :class="!formData.barangay ? 'hidden': ''">
                             <label :class="isValidating && !formData.city ? 'text-red-500': ''" for="city" class="block text-sm font-medium text-gray-700">City <span class="text-xs italic text-gray-400">(Required)</span></label>
                             <div class="relative w-full">
-                                <input required @input="getCities(), isValidating=false" @focus="showCityDropdown = true" @keydown.esc="showCityDropdown = false" @blur="setTimeout(() => showCityDropdown = false, 200)" :class="isValidating && !formData.city ? 'ring-2 ring-red-500': ''" v-model="formData.city" type="text" id="city" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md" autocomplete="address-level2" placeholder="Search for your city">
+                                <input required @input="getCities(), isValidating=false" @focus="showCityDropdown = true" @keydown.esc="showCityDropdown = false" @blur="setTimeout(() => showCityDropdown = false, 200)" :class="isValidating && !formData.city ? 'ring-2 ring-red-500': ''" v-model="formData.city" type="text" id="city" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md disabled:opacity-75 disabled:cursor-not-allowed" autocomplete="address-level2" placeholder="Search for your city">
                                 <!-- Loading indicator positioned inside input at the right -->
                                 <div v-if="isCitySearchLoading" class="absolute right-3 top-1/2 transform -translate-y-1/2">
                                     <div class="w-5 h-5 border-2 border-gray-300 border-t-[#e63b60] rounded-full animate-spin"></div>
@@ -260,7 +299,7 @@
                         </div>
 
                         <!-- Province Search Field -->
-                        <div class="col-span-full">
+                        <div class="col-span-full" :class="!formData.city ? 'hidden': ''">
                             <label :class="isValidating && !formData.province ? 'text-red-500': ''" for="province" class="block text-sm font-medium text-gray-700">Province <span class="text-xs italic text-gray-400">(Required)</span></label>
                             <div class="relative w-full">
                                 <input required @input="getProvinces(), isValidating=false" @focus="showProvinceDropdown = true" @keydown.esc="showProvinceDropdown = false" @blur="setTimeout(() => showProvinceDropdown = false, 200)" :class="isValidating && !formData.province ? 'ring-2 ring-red-500': ''" v-model="formData.province" type="text" id="province" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md" autocomplete="address-level1" placeholder="Search for your province">
@@ -291,6 +330,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <div v-for="field in formConfig" :key="field.id" class="mb-4 col-span-full">
                             <label :for="field.id" class="block text-sm font-medium text-gray-700" :class="isValidating && !formData[field.id] && field.required ? 'text-red-500': ''">
                                 {{ field.label }}
@@ -370,22 +410,24 @@
                         <div class="w-full flex items-center justify-center relative mb-6">
                             <img src="./assets/mx3coffeefront_400x.webp" alt="MX3 Coffee Mix" class="logo mx-auto w-16 h-16 mb-4 rounded-full absolute -top-12 bg-white p-1">
                         </div>
-                        <h2 class="text-2xl font-bold text-gray-800 text-center mb-2 capitalize">Complete Your MX3 Coffee Mix Order</h2>
+                        <h2 class="text-2xl font-bold text-gray-800 text-center mb-2 capitalize">Complete Your {{ chosenProduct }} Order</h2>
                         <p class="text-gray-600 text-center mb-6 text-xs">Start your day right with MX3 Coffee Mix—an easy-to-enjoy, low-acid coffee packed with beneficial nutrients like Vitamin C, Calcium, and Mangosteen.</p>
                         <h2 class="text-2xl font-bold text-center mb-4">Confirm Your Details</h2>
                         <div class="w-full border-t border-gray-300 my-5"></div>
-                        <div class="flex items-center space-x-2 justify-center min-h-[80px]">
-                            <div class="flex flex-col items-center space-x-2">
-                                <div>{{ productList?.[formData.order]?.name || "" }}</div>
+                        <div class="flex items-center space-x-2 justify-between min-h-[80px]">
+                            <div class="flex flex-col">
+                                <p class="text-xs text-gray-600">Product</p>
+                                <div>{{ chosenProduct || "" }}</div>
                             </div>
                             <div class="flex items-center space-x-2">
-                                <div class="flex flex-col">
+                                <div class="flex flex-col space-y-2 items-center">
+                                    <p class="text-xs text-gray-600">Select Quantity</p>
                                     <div class="flex items-center border border-gray-300 rounded-md overflow-hidden w-[100px]">
-                                      <button type="button" @click="decreaseQuantity" class="text-sm px-2 py-1 focus:outline-none hover:bg-gray-100" aria-label="Decrease quantity">−</button>
-                                      <span class="flex-1 text-center font-semibold text-sm py-1">{{ formData.quantity }}</span>
-                                      <button type="button" @click="increaseQuantity" class="text-sm px-2 py-1 focus:outline-none hover:bg-gray-100" aria-label="Increase quantity">+</button>
+                                        <button type="button" @click="decreaseQuantity" class="text-sm px-2 py-1 focus:outline-none hover:bg-gray-100" aria-label="Decrease quantity">−</button>
+                                        <span class="flex-1 text-center font-semibold text-sm py-1">{{ formData.quantity }}</span>
+                                        <button type="button" @click="increaseQuantity" class="text-sm px-2 py-1 focus:outline-none hover:bg-gray-100" aria-label="Increase quantity">+</button>
                                     </div>
-                                  </div>
+                                </div>
                             </div>
                         </div>
                         <div class="flex items-center justify-between">
@@ -436,7 +478,7 @@
                     <div class="w-full flex items-center justify-center relative mb-6">
                         <img src="./assets/mx3coffeefront_400x.webp" alt="MX3 Coffee Mix" class="logo mx-auto w-16 h-16 mb-4 rounded-full absolute -top-12 bg-white p-1">
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-800 text-center mb-2 capitalize">Complete Your MX3 Coffee Mix Order</h2>
+                    <h2 class="text-2xl font-bold text-gray-800 text-center mb-2 capitalize">Complete Your {{ chosenProduct }} Order</h2>
                     <p class="text-gray-600 text-center mb-6 text-xs">Start your day right with MX3 Coffee Mix—an easy-to-enjoy, low-acid coffee packed with beneficial nutrients like Vitamin C, Calcium, and Mangosteen.</p>
                     <div class="w-full border-t border-gray-300 my-5"></div>
                     <h2 class="text-2xl font-bold text-center mb-4">Enter OTP</h2>
@@ -470,7 +512,7 @@
                     <div class="w-full flex items-center justify-center relative mb-6">
                         <img src="./assets/mx3coffeefront_400x.webp" alt="MX3 Coffee Mix" class="logo mx-auto w-16 h-16 mb-4 rounded-full absolute -top-12 bg-white p-1">
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-800 text-center mb-2 capitalize">Complete Your MX3 Coffee Mix Order</h2>
+                    <h2 class="text-2xl font-bold text-gray-800 text-center mb-2 capitalize">Complete Your {{ chosenProduct }} Order</h2>
                     <p class="text-gray-600 text-center mb-6 text-xs">Start your day right with MX3 Coffee Mix—an easy-to-enjoy, low-acid coffee packed with beneficial nutrients like Vitamin C, Calcium, and Mangosteen.</p>
                     <div class="w-full border-t border-gray-300 my-5"></div>
                     <form id="leadForm" class="grid grid-cols-2 gap-4">

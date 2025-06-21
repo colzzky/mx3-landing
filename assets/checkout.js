@@ -66,12 +66,12 @@ document.addEventListener("DOMContentLoaded", () => {
             barangay: "",
             city: "",
             province: "",
+            payment_method: "cod",
+            quantity: 1,
             ...window.CSFORM_FORM.reduce((data, field) => {
                 data[field.id] = "";
                 return data;
             }, {}),
-            payment_method: "cod",
-            quantity: 1,
         },
         productList: {
             "5-boxes": {
@@ -118,6 +118,9 @@ document.addEventListener("DOMContentLoaded", () => {
         otpCountdown: 300, // 5 minutes in seconds
         otpInterval: null,
         agreeToTerms: true,
+        get chosenProduct() {
+            return this.productList?.[this.formData.bundle]?.name || null;
+        },
         get totalPayable() {
             return this.formData.amount * this.formData.quantity;
         },
@@ -136,11 +139,20 @@ document.addEventListener("DOMContentLoaded", () => {
                     extreFieldsRequiredFieldErrors.push(field.id);
                 }
             }
+            const requiredFields = [
+                "firstName",
+                "lastName",
+                "phone",
+                "zip-code",
+                "streetAddress",
+                "barangay",
+                "city",
+                "province",
+            ];
             if (
-                !this.formData.firstName ||
-                !this.formData.lastName ||
-                !this.formData.phone ||
-                !this.formData.email ||
+                requiredFields.some(
+                    (field) => !this.formData[field]
+                ) ||
                 extreFieldsRequiredFieldErrors.length > 0
             ) {
                 alert("Please fill in all required fields.");
@@ -250,9 +262,11 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         async finalizeSubmission() {
             this.isLoading = true;
-            await this.reportConversion("InitiateCheckout");
-            await this.reportConversion("CompleteRegistration");
-            await this.reportConversion("Lead");
+            await Promise.all([
+                this.reportConversion("InitiateCheckout"),
+                this.reportConversion("CompleteRegistration"),
+                this.reportConversion("Lead"),
+            ]);
             const myHeaders = new Headers();
             myHeaders.append("Content-Type", "application/json");
 
@@ -265,7 +279,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const raw = JSON.stringify({
                 data: {
                     ...this.formData,
-                    order: this.productList?.[this.formData.order]?.name || this.formData.order
+                    order: this.chosenProduct || this.formData.order,
+                    total: this.totalPayable,
+                    type: "checkout",
                 },
                 conversionApi: this.buildPayload(),
                 metaPixelId: this.config.metaPixelId,
@@ -299,7 +315,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         this.submitStatus = "success";
                         await this.reportConversion("Purchase");
                         // Redirect to upsell page instead of thank you page
-                        window.location.href = "./upsell.html?" + new URLSearchParams(this.formData).toString();
+                        window.location.href = "./upsell.html?" + new URLSearchParams({...this.formData, verificationToken: this.otpValidationToken}).toString();
                     } else {
                         this.submitStatus = "failed";
                     }
@@ -353,16 +369,21 @@ document.addEventListener("DOMContentLoaded", () => {
                     allQueryParamsJson[key] = value;
                 }
 
+                const verificationToken = this.formData.verificationToken;
+                delete this.formData.verificationToken;
+
                 const raw = JSON.stringify({
                     data: {
                         ...this.formData,
                         order: upsellProduct,
                         quantity: 1,
                         total: upsellAmount,
+                        type: "upsell",
                     },
                     conversionApi: this.buildPayload("Purchase"),
                     metaPixelId: this.config.metaPixelId,
                     conversionApiToken: this.config.conversionApiToken,
+                    verificationToken: verificationToken,
                     params: allQueryParamsJson,
                     sheet_id: this.config.sheet_id,
                     sheet_name: this.config.sheet_name,
@@ -390,7 +411,7 @@ document.addEventListener("DOMContentLoaded", () => {
                             window.location.href = "./thankyou.html?added=true";
                         } else {
                             // Still redirect even if there's an error
-                            window.location.href = "./thankyou.html?added=true";
+                            window.location.href = "./thankyou.html?added=false";
                         }
                         return data;
                     })
@@ -924,6 +945,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     this.showProvinceDropdown = false;
                 }
             });
+        },
+        getQueryParamValue(key) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(key);
         },
         mounted() {
             this.globalEventId = Math.random().toString(36).substring(2, 15);
