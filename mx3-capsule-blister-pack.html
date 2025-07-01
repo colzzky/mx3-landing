@@ -182,7 +182,7 @@
           <a :href="checkoutLink" class="w-full">
             <div class="relative flex items-center justify-center">
               <span class="mr-1">CLICK TO BUY NOW - </span>
-              <span>{{ selectedBundle === '5-boxes' ? '₱800' : '₱1,010' }}</span>
+              <span>{{ selectedBundle === 'mx3-capsule-blister-pack' ? '₱918' : '₱1,010' }}</span>
               <svg class="arrow-icon h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
               </svg>
@@ -226,14 +226,14 @@
               <!-- Product details -->
               <div class="lg:max-w-lg lg:self-end">
                 <div class="mt-4">
-                  <h1 class="text-5xl font-bold tracking-tight text-gray-900 sm:text-4xl">MX3 Capsule</h1>
+                  <h1 class="text-5xl font-bold tracking-tight text-gray-900 sm:text-4xl">MX3 Capsule Blister Pack</h1>
                 </div>
 
                 <section aria-labelledby="information-heading" class="mt-4">
                   <h2 id="information-heading" class="sr-only">Product information</h2>
 
                   <div class="flex items-center">
-                    <p class="text-lg text-gray-900 sm:text-xl">₱1,010.00</p>
+                    <p class="text-lg text-gray-900 sm:text-xl">₱918 (6 boxes)</p>
 
                     <div class="ml-4 border-l border-gray-300 pl-4">
                       <h2 class="sr-only">Reviews</h2>
@@ -264,7 +264,9 @@
                   </div>
 
                   <div class="mt-4 space-y-6">
-                    <p class="text-base text-[#656e6f]">MX3 Natural Pure G. Mangostana Capsule or commonly known as MX3 Capsule is a natural food supplement that is rich in xanthone- a natural chemical extracted from the pericarp of mangosteen fruit (Garcinia Mangostana L.) and has powerful antioxidant and anti-inflammatory properties that help boost the immune system <br> <br> Xanthones have three derivatives, which are alpha, beta, and gamma mangostin, which are all found in MX3.
+                    <p class="text-base text-[#656e6f]">MX3 Natural Pure G. Mangostana Capsule or commonly known as MX3 Capsule is a natural food supplement that is rich in xanthone- a natural chemical extracted from the pericarp of mangosteen fruit (Garcinia Mangostana L.) and has powerful antioxidant and anti-inflammatory properties that help boost the immune system.
+ 
+                    </p>
                   </div>
 
                   <div class="mt-6 flex items-center">
@@ -276,7 +278,7 @@
                   </div>
 
                   <div class="mt-4 space-y-6">
-                    <p class="text-base text-[#656e6f]">Has the most powerful antioxidant property. It can reduce swelling and help relieve pain. It can also help prevent the obstruction and the clogging of arteries that lead to heart diseases and can benefit in lowering LDL (bad cholesterol).
+                    <p class="text-base text-[#656e6f]">Has the most powerful antioxidant property. It can reduce swelling and help relieve pain. It can also help prevent the obstruction and the clogging of arteries that lead to heart diseases and can benefit in lowering LDL (bad cholesterol). <br> <br> Recommended Use: One capsule 2x a day with a glass full of water.
                     </p>
                   </div>
                 </section>
@@ -284,7 +286,7 @@
 
               <!-- Product image -->
               <div class="mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center">
-                <img src="./assets/mx3 capsule.jpg" alt="Smooth coffee blend with low acidity, enriched with Vitamin C, Calcium, and Mangosteen extract (Garcinia Mangostana L.)." class="aspect-square w-full rounded-lg object-cover">
+                <img src="./assets/9-9-2-800x800.jpg" alt="Smooth coffee blend with low acidity, enriched with Vitamin C, Calcium, and Mangosteen extract (Garcinia Mangostana L.)." class="aspect-square w-full rounded-lg object-cover">
               </div>
 
               <!-- Product form -->
@@ -298,12 +300,12 @@
                       <fieldset>
                         <legend class="block text-sm font-medium text-gray-700">Choose Bundle:</legend>
                         <div class="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                          <div @click="selectBundle('mx3-capsule')" :class="{'border-indigo-500': selectedBundle === 'mx3-capsule'}" aria-label="mx3-capsule" class="relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-hidden bg-indigo-50">
-                            <input type="radio" name="size-choice" value="mx3-capsule" class="sr-only" :checked="selectedBundle === 'mx3-capsule'">
-                            <p class="text-xl font-extrabold text-gray-900">₱1,010</p>
-                            <p class="text-base font-medium text-gray-900">MX3 Capsule</p>
+                          <div @click="selectBundle('mx3-capsule-blister-pack')" :class="{'border-indigo-500': selectedBundle === 'mx3-capsule-blister-pack'}" aria-label="mx3-capsule-blister-pack" class="relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-hidden bg-indigo-50">
+                            <input type="radio" name="size-choice" value="mx3-capsule-blister-pack" class="sr-only" :checked="selectedBundle === 'mx3-capsule-blister-pack'">
+                            <p class="text-xl font-extrabold text-gray-900">₱918</p>
+                            <p class="text-base font-medium text-gray-900">6 boxes MX3 Capsule Blister Pack</p>
                             <p class="mt-1 text-sm text-[#656e6f]">Perfect for a health and wellness</p>
-                            <div v-if="selectedBundle === 'mx3-capsule'" class="pointer-events-none absolute -inset-px rounded-lg border-2 border-indigo-500" aria-hidden="true"></div>
+                            <div v-if="selectedBundle === 'mx3-capsule-blister-pack'" class="pointer-events-none absolute -inset-px rounded-lg border-2 border-indigo-500" aria-hidden="true"></div>
                           </div>
                           <div @click="selectBundle('capsule+coffee')" :class="{'border-indigo-500': selectedBundle === 'capsule+coffee'}" aria-label="capsule-coffee-bundle" class="relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-hidden bg-indigo-50">
                             <input type="radio" name="size-choice" value="capsule+coffee" class="sr-only" :checked="selectedBundle === 'capsule+coffee'">
@@ -327,7 +329,7 @@
                       <a id="originalBuyButton" :href="checkoutLink" class="flex flex-col w-full items-center justify-center rounded-md border border-transparent bg-gradient-to-r from-[#e63b60] to-[#ff6b4d] px-8 py-4 text-xl font-bold text-white hover:from-[#e63b60] hover:to-[#ff5a3a] focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden shadow-lg transition-all duration-200">
                         <div class="relative flex items-center">
                           <span class="mr-1">CLICK TO BUY NOW - </span>
-                          <span class="mr-2">{{ selectedBundle === 'mx3-capsule' ? '₱1,010' : '₱1,010' }}</span>
+                          <span class="mr-2">{{ selectedBundle === 'mx3-capsule-blister-pack' ? '₱918' : '₱1,010' }}</span>
                           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                           </svg>
@@ -356,23 +358,25 @@
             <section aria-labelledby="details-heading">
               <div class="flex flex-col items-center text-center">
                 <h2 id="details-heading" class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">The Fine Details</h2>
-                <p class="mt-3 max-w-3xl text-lg text-gray-600">MX3 Capsule is crafted for wellness seekers who love the taste of coffee but want more out of every cup. We've combined the smooth experience of low-acid coffee with beneficial nutrients so you can enjoy your caffeine fix without the usual compromises.</p>
+                <p class="mt-3 max-w-3xl text-lg text-gray-600">MX3 Capsule Blister Pack is crafted for wellness seekers who love the taste of coffee but want more out of every cup. We've combined the smooth experience of low-acid coffee with beneficial nutrients so you can enjoy your caffeine fix without the usual compromises.</p>
               </div>
 
               <div class="mt-16 grid grid-cols-1 gap-y-16 lg:grid-cols-2 lg:gap-x-8">
                 <div>
-                  <img src="./assets/mx3 capsule.jpg" alt="mx3 capsule" class="aspect-3/2 w-full rounded-lg object-cover">
+                  <img src="./assets/blisterpac2.jpg" alt="MX3 Coffee Mix sachets" class="aspect-3/2 w-full rounded-lg object-cover">
                   <ul class="mt-8 space-y-4 text-base text-[#656e6f] list-disc pl-5">
-                    <li>Alpha-Mangostin - Exhibits antioxidant, antimicrobial, and antitumor activities.</li>
-                    <li>Beta-Mangostin - improves mood and relieves stress</li>
-                    <li>Gamma-Mangostin - Has the most powerful antioxidant property. It can reduce swelling and help relieve pain. It can also help prevent the obstruction and the clogging of arteries that lead to heart diseases and can benefit in lowering LDL (bad cholesterol).</li>
+                    <li>Verified with Alpha, Beta, and Gamma nutrients from G. mangostana.</li>
+                    <li>Very low in sodium</li>
+                    <li>Fat-free</li>
+                     <li>Cholesterol-Free</li>
                   </ul>
                 </div>
                 <div>
-                  <img src="./assets/MX3 Coffee Mix preparation.webp" alt="MX3 Coffee Mix preparation" class="aspect-3/2 w-full rounded-lg object-cover">
+                  <img src="./assets/blisterpack3.jpg" alt="MX3 Coffee Mix preparation" class="aspect-3/2 w-full rounded-lg object-cover">
                   <ul class="mt-8 space-y-4 text-base text-[#656e6f] list-disc pl-5">
-                    <li>Powered by Mangosteen Extract (Garcinia Mangostana), rich in natural antioxidants like Xanthones</li>
-                    <li>Only 45 calories per serving</li>
+                    <li>Rich in xanthone- a natural chemical extracted from the pericarp of mangosteen fruit (Garcinia Mangostana L.)</li>
+                    <li>Xanthones have three derivatives, which are alpha, beta, and gamma mangostin, which are all found in MX3.</li>
+                    <li>Garcinia Mangostana L. 500mg</li>
                     <li>Each sachet is your mini-moment of joy—hot or cold, with or without milk.</li>
                   </ul>
                 </div>
@@ -720,9 +724,9 @@
                 }
               ]
 
-              const selectedBundle = ref('mx3-capsule') // Default selection
+              const selectedBundle = ref('mx3-capsule-blister-pack') // Default selection
               const showFixedButton = ref(false)
-              const selectedBundleValue = ref(850) // Default to 5-boxes price
+              const selectedBundleValue = ref(918) // Default to 5-boxes price
               const globalEventId = ref(Math.random().toString(36).substring(2, 15));
 
               const config = {
@@ -738,7 +742,7 @@
               function selectBundle(bundle) {
                 selectedBundle.value = bundle
                 // Update the bundle value based on selection
-                selectedBundleValue.value = bundle === 'mx3-capsule' ? 1010 : 1010
+                selectedBundleValue.value = bundle === 'mx3-capsule-blister-pack' ? 918 : 1010
               }
 
               const conversionHelpers = {
@@ -877,6 +881,7 @@
               }
             }
           }).mount('#app')
+          document.getElementById('current-year').textContent = new Date().getFullYear()
         </script>
 
         <footer aria-labelledby="footer-heading" class="bg-[#242424]">
@@ -986,9 +991,5 @@
         </footer>
       </div>
   </body>
-
-  <script>
-    document.getElementById('current-year').textContent = new Date().getFullYear()
-  </script>
 
 </html>

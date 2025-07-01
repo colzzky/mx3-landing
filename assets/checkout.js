@@ -80,15 +80,70 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: "5-boxes of MX3 Coffee Mix"
             },
             "capsule coffee": {
-                price: 100,
+                price: 1010,
                 quantity: 1,
                 name: "1 Box of MX3 Capsule + 1 Box of MX3 Coffee Mix"
             },
             "mx3-capsule-blister-pack": {
-                price: 850,
-                quantity: 5,
-                name: "5-boxes of MX3 Capsule Blister Pack"
-            }
+                price: 918,
+                quantity: 6,
+                name: "6-boxes of MX3 Capsule Blister Pack"
+            },
+            "mx3-capsule-buy15-take1-free": {
+                price: 15150,
+                quantity: 1,
+                name: "1 MX3 Capsule buy 15 take 1 Free"
+            },
+            "mx3-capsule-w-coffee-gift-set": {
+                price: 1500,
+                quantity: 1,
+                name: "1 MX3 Capsule with Coffee Gift Set"
+            },
+            "mx3-capsule-with-coffee-mix": {
+                price: 1010,
+                quantity: 1,
+                name: "1 MX3 Capsule with MX3 Coffee Mix"
+            },
+            "MX3-Plus-Capsule": {
+                price: 840,
+                quantity: 1,
+                name: "1 MX3 Plus Capsule"
+            },
+            "mx3-capsule": {
+                price: 1010,
+                quantity: 1,
+                name: "1 MX3 Capsule"
+            },
+            "upsell-capsule-w-mx3-coffee-mix": {
+                price: 1010,
+                quantity: 1,
+                name: "1 MX3 Capsule with MX3 Coffee Mix",
+                upsell_url: "./upsell-capsule-w-mx3-coffee-mix.html"
+            },
+            "upsell-capsule-w-mx3-coffee-gift-set": {
+                price: 1500,
+                quantity: 1,
+                name: "1 MX3 Capsule with MX3 Coffee Gift Set",
+                upsell_url: "./upsell-capsule-w-mx3-coffee-gift-set.html"
+            },
+            "upsell-mx3plus-w-coffee-Mix": {
+                price: 840,
+                quantity: 1,
+                name: "1 MX3 Plus with MX3 Coffee Mix",
+                upsell_url: "./upsell-mx3plus-w-coffee-Mix.html"
+            },
+            "upsell-coffemix-buy11take1": {
+                price: 1958,
+                quantity: 1,
+                name: "1 MX3 Plus with MX3 Coffee Mix",
+                upsell_url: "./upsell-coffemix-buy11take1.html"
+            },
+            "upsell-blister-pack": {
+                price: 153,
+                quantity: 1,
+                name: "1 Capsule blister pack",
+                upsell_url: "./upsell-blister-pack.html"
+            },
         },
         barangays: [],
         meiliSearch: null,
@@ -265,6 +320,51 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             console.log(this.formData.quantity);
         },
+        // Add this function to determine upsell path
+        getUpsellPath(bundle, isSecondLayer = false) {
+            const upsellPaths = {
+                // Primary product upsells
+                "5-boxes": {
+                    primary: "./upsell-blister-pack.html",
+                    secondary: null // No second layer for lowest price item
+                },
+                "capsule coffee": {
+                    primary: "./upsell-mx3plus-w-coffee-Mix.html",
+                    secondary: "./upsell-blister-pack.html"
+                },
+                "mx3-capsule-blister-pack": {
+                    primary: "./upsell-blister-pack.html",
+                    secondary: null
+                },
+                "mx3-capsule-buy15-take1-free": {
+                    primary: "./upsell-coffemix-buy11take1.html",
+                    secondary: "./upsell-capsule-w-mx3-coffee-gift-set.html"
+                },
+                "mx3-capsule-w-coffee-gift-set": {
+                    primary: "./upsell-capsule-w-mx3-coffee-mix.html",
+                    secondary: "./upsell-mx3plus-w-coffee-Mix.html"
+                },
+                "mx3-capsule-with-coffee-mix": {
+                    primary: "./upsell-mx3plus-w-coffee-Mix.html",
+                    secondary: "./upsell-blister-pack.html"
+                },
+                "MX3-Plus-Capsule": {
+                    primary: "./upsell-blister-pack.html",
+                    secondary: null
+                },
+                "mx3-capsule": {
+                    primary: "./upsell-mx3plus-w-coffee-Mix.html",
+                    secondary: "./upsell-blister-pack.html"
+                }
+            };
+
+            const path = upsellPaths[bundle];
+            if (!path) return null;
+
+            return isSecondLayer ? path.secondary : path.primary;
+        },
+
+        // Modified finalizeSubmission function
         async finalizeSubmission() {
             this.isLoading = true;
             await Promise.all([
@@ -320,8 +420,21 @@ document.addEventListener("DOMContentLoaded", () => {
                     if (data.status) {
                         this.submitStatus = "success";
                         await this.reportConversion("Purchase");
-                        // Redirect to upsell page instead of thank you page
-                        window.location.href = "./upsell.html?" + new URLSearchParams({...this.formData, verificationToken: this.otpValidationToken}).toString();
+
+                        // Get upsell path based on bundle
+                        const upsellPath = this.getUpsellPath(this.formData.bundle);
+
+                        if (upsellPath) {
+                            const params = new URLSearchParams({
+                                ...this.formData,
+                                verificationToken: this.otpValidationToken,
+                                originalBundle: this.formData.bundle // Track original purchase
+                            });
+                            window.location.href = upsellPath + "?" + params.toString();
+                        } else {
+                            // No upsell available, go to thank you
+                            window.location.href = "./thankyou.html";
+                        }
                     } else {
                         this.submitStatus = "failed";
                     }
@@ -334,14 +447,15 @@ document.addEventListener("DOMContentLoaded", () => {
                     console.error("Error submitting form:", error);
                 })
         },
-        async submitUpsell({upsellProduct, upsellAmount}) {
-            try {
 
-                console.log({upsellProduct, upsellAmount});
-                
+        // Modified submitUpsell function
+        async submitUpsell({ upsellProduct, upsellAmount }) {
+            try {
+                console.log({ upsellProduct, upsellAmount });
+
                 // Get URL parameters
                 const urlParams = new URLSearchParams(window.location.search);
-                
+
                 // Keep track of original order information
                 for (const [key, value] of urlParams) {
                     this.formData[key] = value;
@@ -414,10 +528,27 @@ document.addEventListener("DOMContentLoaded", () => {
                         if (loader) loader.style.display = "none";
 
                         if (data.status) {
-                            // Redirect to thank you page with added parameter
-                            window.location.href = "./thankyou.html?added=true";
+                            // Check for second layer upsell
+                            const originalBundle = this.formData.originalBundle;
+                            const secondLayerPath = this.getUpsellPath(originalBundle, true);
+
+                            // Track if this is already a second layer upsell
+                            const isSecondLayerUpsell = urlParams.has('secondLayer');
+
+                            if (secondLayerPath && !isSecondLayerUpsell) {
+                                // Go to second layer upsell
+                                const params = new URLSearchParams({
+                                    ...this.formData,
+                                    verificationToken: verificationToken,
+                                    secondLayer: 'true'
+                                });
+                                window.location.href = secondLayerPath + "?" + params.toString();
+                            } else {
+                                // No more upsells, go to thank you
+                                window.location.href = "./thankyou.html?added=true";
+                            }
                         } else {
-                            // Still redirect even if there's an error
+                            // Error but still redirect
                             window.location.href = "./thankyou.html?added=false";
                         }
                         return data;
@@ -960,7 +1091,7 @@ document.addEventListener("DOMContentLoaded", () => {
         mounted() {
             this.globalEventId = Math.random().toString(36).substring(2, 15);
             if (localStorage.getItem("formData")) {
-                this.formData = {...this.formData, ...JSON.parse(localStorage.getItem("formData"))};
+                this.formData = { ...this.formData, ...JSON.parse(localStorage.getItem("formData")) };
             }
 
             // Setup click outside handler for the barangay dropdown
