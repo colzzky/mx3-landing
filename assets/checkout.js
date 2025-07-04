@@ -75,74 +75,87 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         productList: {
             "5-boxes": {
-                price: 800,
+                price: 890,
                 quantity: 5,
-                name: "5-boxes of MX3 Coffee Mix"
+                name: "5-boxes of MX3 Coffee Mix",
+                img: "./assets/mx3coffeefront_400x.webp"
             },
             "capsule coffee": {
                 price: 1010,
                 quantity: 1,
-                name: "1 Box of MX3 Capsule + 1 Box of MX3 Coffee Mix"
+                name: "1 Box of MX3 Capsule + 1 Box of MX3 Coffee Mix",
+                img: "./assets/mx3capsule_coffeemix_5000x.webp"
             },
             "mx3-capsule-blister-pack": {
-                price: 918,
-                quantity: 6,
-                name: "6-boxes of MX3 Capsule Blister Pack"
+                price: 850,
+                quantity: 5,
+                name: "5-boxes of MX3 Capsule Blister Pack",
+                img: "./assets/cpasuleblisterpack.jpg"
             },
             "mx3-capsule-buy15-take1-free": {
                 price: 15150,
                 quantity: 1,
-                name: "1 MX3 Capsule buy 15 take 1 Free"
+                name: "1 MX3 Capsule buy 15 take 1 Free",
+                img: "./assets/capsulebuy15take1.jpg"
             },
             "mx3-capsule-w-coffee-gift-set": {
                 price: 1500,
                 quantity: 1,
-                name: "1 MX3 Capsule with Coffee Gift Set"
+                name: "1 MX3 Capsule with Coffee Gift Set",
+                img: "./assets/MX3CapsulewithMX3CoffeeGiftSet_5000x.webp"
             },
             "mx3-capsule-with-coffee-mix": {
                 price: 1010,
                 quantity: 1,
-                name: "1 MX3 Capsule with MX3 Coffee Mix"
+                name: "1 MX3 Capsule with MX3 Coffee Mix",
+                img: "./assets/mx3capsule_coffeemix_5000x.webp"
             },
             "MX3-Plus-Capsule": {
                 price: 840,
                 quantity: 1,
-                name: "1 MX3 Plus Capsule"
+                name: "1 MX3 Plus Capsule",
+                img: "./assets/mx3plusfront_5000x.webp"
             },
             "mx3-capsule": {
                 price: 1010,
                 quantity: 1,
-                name: "1 MX3 Capsule"
+                name: "1 MX3 Capsule",
+                img: "./assets/mx3 capsule.jpg"
             },
             "upsell-capsule-w-mx3-coffee-mix": {
                 price: 1010,
                 quantity: 1,
                 name: "1 MX3 Capsule with MX3 Coffee Mix",
-                upsell_url: "./upsell-capsule-w-mx3-coffee-mix.html"
+                upsell_url: "./upsell-capsule-w-mx3-coffee-mix.html",
+                img: "./assets/mx3capsule_coffeemix_5000x.webp"
             },
             "upsell-capsule-w-mx3-coffee-gift-set": {
                 price: 1500,
                 quantity: 1,
                 name: "1 MX3 Capsule with MX3 Coffee Gift Set",
-                upsell_url: "./upsell-capsule-w-mx3-coffee-gift-set.html"
+                upsell_url: "./upsell-capsule-w-mx3-coffee-gift-set.html",
+                img: "./assets/MX3CapsulewithMX3CoffeeGiftSet_5000x.webp"
             },
             "upsell-mx3plus-w-coffee-Mix": {
                 price: 840,
                 quantity: 1,
                 name: "1 MX3 Plus with MX3 Coffee Mix",
-                upsell_url: "./upsell-mx3plus-w-coffee-Mix.html"
+                upsell_url: "./upsell-mx3plus-w-coffee-Mix.html",
+                img: "./assets/mx3plus_coffeemix_5000x.webp"
             },
             "upsell-coffemix-buy11take1": {
                 price: 1958,
                 quantity: 1,
                 name: "1 MX3 Plus with MX3 Coffee Mix",
-                upsell_url: "./upsell-coffemix-buy11take1.html"
+                upsell_url: "./upsell-coffemix-buy11take1.html",
+                img: "./assets/mx3coffeemix11_1_5000x.webp"
             },
             "upsell-blister-pack": {
-                price: 153,
+                price: 170,
                 quantity: 1,
                 name: "1 Capsule blister pack",
-                upsell_url: "./upsell-blister-pack.html"
+                upsell_url: "./upsell-blister-pack.html",
+                img: "./assets/cpasuleblisterpack.jpg"
             },
         },
         barangays: [],
@@ -180,6 +193,9 @@ document.addEventListener("DOMContentLoaded", () => {
         agreeToTerms: true,
         get chosenProduct() {
             return this.productList?.[this.formData.bundle]?.name || null;
+        },
+        get chosenProductImage() {
+            return this.productList?.[this.formData.bundle]?.img || "./assets/mx3coffeefront_400x.webp";
         },
         get totalPayable() {
             return this.formData.amount * this.formData.quantity;
