@@ -75,10 +75,10 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         productList: {
             "5-boxes": {
-                price: 890,
+                price: 800,
                 quantity: 5,
                 name: "5-boxes of MX3 Coffee Mix",
-                img: "./assets/mx3coffeefront_400x.webp"
+                img: "./assets/5x-mx3-coffee-mix-box.png"
             },
             "capsule coffee": {
                 price: 1010,
@@ -87,10 +87,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 img: "./assets/mx3capsule_coffeemix_5000x.webp"
             },
             "mx3-capsule-blister-pack": {
-                price: 850,
-                quantity: 5,
-                name: "5-boxes of MX3 Capsule Blister Pack",
-                img: "./assets/cpasuleblisterpack.jpg"
+                price: 918,
+                quantity: 6,
+                name: "6-packs of MX3 Capsule Blister Pack",
+                img: "./assets/6x-mx3-blister-pack.png"
             },
             "mx3-capsule-buy15-take1-free": {
                 price: 15150,
@@ -151,7 +151,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 img: "./assets/mx3coffeemix11_1_5000x.webp"
             },
             "upsell-blister-pack": {
-                price: 170,
+                price: 153,
                 quantity: 1,
                 name: "1 Capsule blister pack",
                 upsell_url: "./upsell-blister-pack.html",
