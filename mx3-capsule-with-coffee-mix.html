@@ -723,7 +723,7 @@
 
               const selectedBundle = ref('1-kilo-pack-coffee-mix') // Default selection
               const showFixedButton = ref(false)
-              const selectedBundleValue = ref(850) // Default to 5-boxes price
+              const selectedBundleValue = ref(1020) // Default to 5-boxes price
               const globalEventId = ref(Math.random().toString(36).substring(2, 15));
 
               const config = {
@@ -739,7 +739,7 @@
               function selectBundle(bundle) {
                 selectedBundle.value = bundle
                 // Update the bundle value based on selection
-                selectedBundleValue.value = bundle === '1-kilo-pack-coffee-mix' ? 850 :  1750
+                selectedBundleValue.value = bundle === '1-kilo-pack-coffee-mix' ? 1020 :  1750
               }
 
               const conversionHelpers = {

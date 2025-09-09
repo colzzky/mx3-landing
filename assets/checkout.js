@@ -87,9 +87,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 img: "./assets/5x-mx3-coffee-mix-box.png"
             },
             "mx3-capsule-blister-pack": {
-                price: 850,
-                quantity: 5,
-                name: "5-packs of MX3 Capsule Blister Pack",
+                price: 1020,
+                quantity: 6,
+                name: "6-packs of MX3 Capsule Blister Pack",
                 img: "./assets/5x-mx3-blister-pack.png"
             },
             "mx3-capsule-buy15-take1-free": {
