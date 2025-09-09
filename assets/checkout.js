@@ -90,7 +90,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 price: 1020,
                 quantity: 6,
                 name: "6-packs of MX3 Capsule Blister Pack",
-                img: "./assets/5x-mx3-blister-pack.png"
+                img: "./assets/6x-mx3-blister-pack.png"
             },
             "mx3-capsule-buy15-take1-free": {
                 price: 15150,
