@@ -132,7 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "upsell-coffemix-buy11take1": {
                 price: 1958,
                 quantity: 1,
-                name: "1 MX3 Plus with MX3 Coffee Mix",
+                name: "1-box MX3 Plus",
                 upsell_url: "./upsell-coffemix-buy11take1.html",
                 img: "./assets/mx3coffeemix11_1_5000x.webp"
             },
