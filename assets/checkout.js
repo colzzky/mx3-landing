@@ -74,23 +74,23 @@ document.addEventListener("DOMContentLoaded", () => {
             }, {}),
         },
         productList: {
-            "5-boxes": {
-                price: 800,
-                quantity: 5,
-                name: "5-boxes of MX3 Coffee Mix",
-                img: "./assets/5x-mx3-coffee-mix-box.png"
-            },
-            "capsule coffee": {
-                price: 1010,
+            "1-box": {
+                price: 218,
                 quantity: 1,
-                name: "1 Box of MX3 Capsule + 1 Box of MX3 Coffee Mix",
-                img: "./assets/mx3capsule_coffeemix_5000x.webp"
+                name: "1-box of MX3 Coffee Mix",
+                img: "./assets/mx3coffeefront_5000x.webp"
+            },
+            "4-boxes": {
+                price: 872,
+                quantity: 5,
+                name: "4-boxes of MX3 Coffee Mix",
+                img: "./assets/mx3-coffee-4-boxes-bundle.png"
             },
             "mx3-capsule-blister-pack": {
-                price: 918,
-                quantity: 6,
-                name: "6-packs of MX3 Capsule Blister Pack",
-                img: "./assets/6x-mx3-blister-pack.png"
+                price: 850,
+                quantity: 5,
+                name: "5-packs of MX3 Capsule Blister Pack",
+                img: "./assets/5x-mx3-blister-pack.png"
             },
             "mx3-capsule-buy15-take1-free": {
                 price: 15150,
@@ -104,11 +104,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: "1 MX3 Capsule with Coffee Gift Set",
                 img: "./assets/MX3CapsulewithMX3CoffeeGiftSet_5000x.webp"
             },
-            "mx3-capsule-with-coffee-mix": {
-                price: 1010,
+            "1-kilo-pack-coffee-mix": {
+                price:  1750,
                 quantity: 1,
-                name: "1 MX3 Capsule with MX3 Coffee Mix",
-                img: "./assets/mx3capsule_coffeemix_5000x.webp"
+                name: "1-Kilo Pack MX3 Coffee Mix",
+                img: "./assets/mx3coffeemix1kilo_5000x.webp"
             },
             "MX3-Plus-Capsule": {
                 price: 840,
@@ -117,17 +117,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 img: "./assets/mx3plusfront_5000x.webp"
             },
             "mx3-capsule": {
-                price: 1010,
+                price:  1750,
                 quantity: 1,
                 name: "1 MX3 Capsule",
                 img: "./assets/mx3 capsule.jpg"
-            },
-            "upsell-capsule-w-mx3-coffee-mix": {
-                price: 1010,
-                quantity: 1,
-                name: "1 MX3 Capsule with MX3 Coffee Mix",
-                upsell_url: "./upsell-capsule-w-mx3-coffee-mix.html",
-                img: "./assets/mx3capsule_coffeemix_5000x.webp"
             },
             "upsell-capsule-w-mx3-coffee-gift-set": {
                 price: 1500,
@@ -135,13 +128,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: "1 MX3 Capsule with MX3 Coffee Gift Set",
                 upsell_url: "./upsell-capsule-w-mx3-coffee-gift-set.html",
                 img: "./assets/MX3CapsulewithMX3CoffeeGiftSet_5000x.webp"
-            },
-            "upsell-mx3plus-w-coffee-Mix": {
-                price: 840,
-                quantity: 1,
-                name: "1 MX3 Plus with MX3 Coffee Mix",
-                upsell_url: "./upsell-mx3plus-w-coffee-Mix.html",
-                img: "./assets/mx3plus_coffeemix_5000x.webp"
             },
             "upsell-coffemix-buy11take1": {
                 price: 1958,
@@ -151,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 img: "./assets/mx3coffeemix11_1_5000x.webp"
             },
             "upsell-blister-pack": {
-                price: 153,
+                price: 170,
                 quantity: 1,
                 name: "1 Capsule blister pack",
                 upsell_url: "./upsell-blister-pack.html",
@@ -340,36 +326,36 @@ document.addEventListener("DOMContentLoaded", () => {
         getUpsellPath(bundle, isSecondLayer = false) {
             const upsellPaths = {
                 // Primary product upsells
-                "5-boxes": {
+                "4-boxes": {
                     primary: "./upsell-blister-pack.html",
-                    secondary: null // No second layer for lowest price item
+                    secondary: "./upsell-mx3plus.html"
                 },
-                "capsule coffee": {
-                    primary: "./upsell-mx3plus-w-coffee-Mix.html",
-                    secondary: "./upsell-blister-pack.html"
+                "1-kilo-pack-coffee-mix": {
+                    primary: "./upsell-blister-pack.html",
+                    secondary: "./upsell-mx3-coffee.html",
                 },
                 "mx3-capsule-blister-pack": {
-                    primary: "./upsell-blister-pack.html",
-                    secondary: null
+                    primary: "./upsell-mx3-coffee.html",
+                    secondary: "./upsell-mx3plus.html"
                 },
                 "mx3-capsule-buy15-take1-free": {
-                    primary: "./upsell-coffemix-buy11take1.html",
-                    secondary: "./upsell-capsule-w-mx3-coffee-gift-set.html"
+                    primary: "./upsell-mx3-coffee.html",
+                    secondary: "./upsell-blister-pack.html",
                 },
                 "mx3-capsule-w-coffee-gift-set": {
-                    primary: "./upsell-capsule-w-mx3-coffee-mix.html",
-                    secondary: "./upsell-mx3plus-w-coffee-Mix.html"
+                    primary: "./upsell-mx3-coffee.html",
+                    secondary: "./upsell-blister-pack.html",
                 },
-                "mx3-capsule-with-coffee-mix": {
-                    primary: "./upsell-mx3plus-w-coffee-Mix.html",
-                    secondary: "./upsell-blister-pack.html"
+                "1-kilo-pack-coffee-mix": {
+                    primary: "./upsell-blister-pack.html",
+                    secondary: "./upsell-mx3-coffee.html",
                 },
                 "MX3-Plus-Capsule": {
-                    primary: "./upsell-blister-pack.html",
-                    secondary: null
+                    primary: "./upsell-mx3-coffee.html",
+                    secondary: "./upsell-blister-pack.html",
                 },
                 "mx3-capsule": {
-                    primary: "./upsell-mx3plus-w-coffee-Mix.html",
+                    primary: "./upsell-mx3-coffee.html",
                     secondary: "./upsell-blister-pack.html"
                 }
             };

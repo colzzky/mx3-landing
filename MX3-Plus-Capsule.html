@@ -182,7 +182,7 @@
           <a :href="checkoutLink" class="w-full">
             <div class="relative flex items-center justify-center">
               <span class="mr-1">CLICK TO BUY NOW - </span>
-              <span>{{ selectedBundle === '5-boxes' ? '₱800' : '₱1,010' }}</span>
+              <span>{{ selectedBundle === '4-boxes' ? '₱800' : '₱ 1,750' }}</span>
               <svg class="arrow-icon h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
               </svg>
@@ -311,12 +311,12 @@
                             <p class="mt-1 text-sm text-[#656e6f]">Perfect for a health and wellness</p>
                             <div v-if="selectedBundle === 'MX3-Plus-Capsule'" class="pointer-events-none absolute -inset-px rounded-lg border-2 border-indigo-500" aria-hidden="true"></div>
                           </div>
-                          <div @click="selectBundle('capsule+coffee')" :class="{'border-indigo-500': selectedBundle === 'capsule+coffee'}" aria-label="capsule-coffee-bundle" class="relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-hidden bg-indigo-50">
-                            <input type="radio" name="size-choice" value="capsule+coffee" class="sr-only" :checked="selectedBundle === 'capsule+coffee'">
-                            <p class="text-xl font-extrabold text-gray-900">₱1,010</p>
-                            <p class="text-base font-medium text-gray-900">1 Box MX3 Coffee + 1 Box of MX3 Capsule</p>
+                          <div @click="selectBundle('1-kilo-pack-coffee-mix')" :class="{'border-indigo-500': selectedBundle === '1-kilo-pack-coffee-mix'}" aria-label="capsule-coffee-bundle" class="relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-hidden bg-indigo-50">
+                            <input type="radio" name="size-choice" value="1-kilo-pack-coffee-mix" class="sr-only" :checked="selectedBundle === '1-kilo-pack-coffee-mix'">
+                            <p class="text-xl font-extrabold text-gray-900">₱ 1,750</p>
+                            <p class="text-base font-medium text-gray-900">1-Kilo Pack MX3 Coffee Mix</p>
                             <p class="mt-1 text-sm text-[#656e6f]">Great for daily drinkers or for sharing with the fam!</p>
-                            <div v-if="selectedBundle === 'capsule+coffee'" class="pointer-events-none absolute -inset-px rounded-lg border-2 border-indigo-500" aria-hidden="true"></div>
+                            <div v-if="selectedBundle === '1-kilo-pack-coffee-mix'" class="pointer-events-none absolute -inset-px rounded-lg border-2 border-indigo-500" aria-hidden="true"></div>
                           </div>
                         </div>
                       </fieldset>
@@ -333,7 +333,7 @@
                       <a id="originalBuyButton" :href="checkoutLink" class="flex flex-col w-full items-center justify-center rounded-md border border-transparent bg-gradient-to-r from-[#e63b60] to-[#ff6b4d] px-8 py-4 text-xl font-bold text-white hover:from-[#e63b60] hover:to-[#ff5a3a] focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden shadow-lg transition-all duration-200">
                         <div class="relative flex items-center">
                           <span class="mr-1">CLICK TO BUY NOW - </span>
-                          <span class="mr-2">{{ selectedBundle === 'MX3-Plus-Capsule' ? '₱840' : '₱1,010' }}</span>
+                          <span class="mr-2">{{ selectedBundle === 'MX3-Plus-Capsule' ? '₱840' : '₱ 1,750' }}</span>
                           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                           </svg>
@@ -728,7 +728,7 @@
 
               const selectedBundle = ref('MX3-Plus-Capsule') // Default selection
               const showFixedButton = ref(false)
-              const selectedBundleValue = ref(850) // Default to 5-boxes price
+              const selectedBundleValue = ref(850) // Default to 4-boxes price
               const globalEventId = ref(Math.random().toString(36).substring(2, 15));
 
               const config = {
@@ -744,7 +744,7 @@
               function selectBundle(bundle) {
                 selectedBundle.value = bundle
                 // Update the bundle value based on selection
-                selectedBundleValue.value = bundle === 'MX3-Plus-Capsule' ? 840 : 1010
+                selectedBundleValue.value = bundle === 'MX3-Plus-Capsule' ? 840 :  1750
               }
 
               const conversionHelpers = {
