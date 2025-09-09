@@ -80,11 +80,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 name: "1-box of MX3 Coffee Mix",
                 img: "./assets/mx3coffeefront_5000x.webp"
             },
-            "4-boxes": {
-                price: 872,
+            "5-boxes": {
+                price: 1090,
                 quantity: 5,
-                name: "4-boxes of MX3 Coffee Mix",
-                img: "./assets/mx3-coffee-4-boxes-bundle.png"
+                name: "5-boxes of MX3 Coffee Mix",
+                img: "./assets/5x-mx3-coffee-mix-box.png"
             },
             "mx3-capsule-blister-pack": {
                 price: 850,
@@ -326,7 +326,7 @@ document.addEventListener("DOMContentLoaded", () => {
         getUpsellPath(bundle, isSecondLayer = false) {
             const upsellPaths = {
                 // Primary product upsells
-                "4-boxes": {
+                "5-boxes": {
                     primary: "./upsell-blister-pack.html",
                     secondary: "./upsell-mx3plus.html"
                 },
