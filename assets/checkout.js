@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 img: "./assets/MX3CapsulewithMX3CoffeeGiftSet_5000x.webp"
             },
             "1-kilo-pack-coffee-mix": {
-                price:  1750,
+                price:  2175,
                 quantity: 1,
                 name: "1-Kilo Pack MX3 Coffee Mix",
                 img: "./assets/mx3coffeemix1kilo_5000x.webp"
@@ -117,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 img: "./assets/mx3plusfront_5000x.webp"
             },
             "mx3-capsule": {
-                price:  1750,
+                price:  2175,
                 quantity: 1,
                 name: "1 MX3 Capsule",
                 img: "./assets/mx3 capsule.jpg"
