@@ -182,7 +182,7 @@
           <a :href="checkoutLink" class="w-full">
             <div class="relative flex items-center justify-center">
               <span class="mr-1">CLICK TO BUY NOW - </span>
-              <span>{{ selectedBundle === '6-boxes' ? '₱1090' : '₱2175' }}</span>
+              <span>₱{{ parseFloat(selectedBundleValue).toFixed(2) }}</span>
               <svg class="arrow-icon h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
               </svg>
@@ -302,14 +302,20 @@ MX3 Maxant Bar Anti-bacterial Soap has xanthone, a natural potent antioxidant co
                         <div class="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-2">
                           <div @click="selectBundle('mx3-capsule-w-coffee-gift-set')" :class="{'border-indigo-500': selectedBundle === 'mx3-capsule-w-coffee-gift-set'}" aria-label="mx3-capsule-w-coffee-gift-set" class="relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-hidden bg-indigo-50">
                             <input type="radio" name="size-choice" value="mx3-capsule-w-coffee-gift-set" class="sr-only" :checked="selectedBundle === 'mx3-capsule-w-coffee-gift-set'">
-                            <p class="text-xl font-extrabold text-gray-900">₱1,500</p>
+                            <p class="text-xl font-extrabold text-gray-900">
+                              <span v-if="isPromoActive" class="line-through text-gray-500 mr-2">₱{{ originalPriceMap['mx3-capsule-w-coffee-gift-set'] }}</span>
+                              ₱{{ productPriceMap['mx3-capsule-w-coffee-gift-set'] }}
+                            </p>
                             <p class="text-base font-medium text-gray-900">MX3 Capsule with MX3 Coffee Gift Set</p>
                             <p class="mt-1 text-sm text-[#656e6f]">Perfect for a health wellness and boost the immune system.</p>
                             <div v-if="selectedBundle === 'mx3-capsule-w-coffee-gift-set'" class="pointer-events-none absolute -inset-px rounded-lg border-2 border-indigo-500" aria-hidden="true"></div>
                           </div>
                           <div @click="selectBundle('1-kilo-pack-coffee-mix')" :class="{'border-indigo-500': selectedBundle === '1-kilo-pack-coffee-mix'}" aria-label="capsule-coffee-bundle" class="relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-hidden bg-indigo-50">
                             <input type="radio" name="size-choice" value="1-kilo-pack-coffee-mix" class="sr-only" :checked="selectedBundle === '1-kilo-pack-coffee-mix'">
-                            <p class="text-xl font-extrabold text-gray-900">₱2175</p>
+                            <p class="text-xl font-extrabold text-gray-900">
+                              <span v-if="isPromoActive" class="line-through text-gray-500 mr-2">₱{{ originalPriceMap['1-kilo-pack-coffee-mix'] }}</span>
+                              ₱{{ productPriceMap['1-kilo-pack-coffee-mix'] }}
+                            </p>
                             <p class="text-base font-medium text-gray-900">1-Kilo Pack MX3 Coffee Mix</p>
                             <p class="mt-1 text-sm text-[#656e6f]">Great for daily drinkers or for sharing with the fam!</p>
                             <div v-if="selectedBundle === '1-kilo-pack-coffee-mix'" class="pointer-events-none absolute -inset-px rounded-lg border-2 border-indigo-500" aria-hidden="true"></div>
@@ -329,7 +335,7 @@ MX3 Maxant Bar Anti-bacterial Soap has xanthone, a natural potent antioxidant co
                       <a id="originalBuyButton" :href="checkoutLink" class="flex flex-col w-full items-center justify-center rounded-md border border-transparent bg-gradient-to-r from-[#e63b60] to-[#ff6b4d] px-8 py-4 text-xl font-bold text-white hover:from-[#e63b60] hover:to-[#ff5a3a] focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden shadow-lg transition-all duration-200">
                         <div class="relative flex items-center">
                           <span class="mr-1">CLICK TO BUY NOW - </span>
-                          <span class="mr-2">{{ selectedBundle === 'mx3-capsule-w-coffee-gift-set' ? '₱1,500' : '₱2175' }}</span>
+                          <span class="mr-2">₱{{ parseFloat(selectedBundleValue).toFixed(2) }}</span>
                           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                           </svg>
@@ -581,6 +587,35 @@ MX3 Maxant Bar Anti-bacterial Soap has xanthone, a natural potent antioxidant co
         <script>
           const { createApp, ref, computed, onMounted } = Vue
 
+          // Promo configuration
+          const PROMO_CONFIG = [
+            // Example promo - uncomment and modify dates to activate:
+            // {
+            //     name: "Christmas Sale 2025",
+            //     startDate: "2025-12-01T00:00:00+08:00",
+            //     endDate: "2025-12-31T23:59:59+08:00",
+            //     discountPercentage: 15
+            // }
+          ];
+
+          function getCurrentPhilippineTime() {
+            return new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Manila"}));
+          }
+
+          function getActivePromo() {
+            const now = getCurrentPhilippineTime();
+            const activePromos = PROMO_CONFIG.filter(promo => {
+              const start = new Date(promo.startDate);
+              const end = new Date(promo.endDate);
+              return now >= start && now <= end;
+            });
+            return activePromos.length > 0 ? activePromos[activePromos.length - 1] : null;
+          }
+
+          function calculateSalePrice(basePrice, discountPercentage) {
+            return Math.round(basePrice * (1 - discountPercentage / 100));
+          }
+
           createApp({
             setup() {
 
@@ -729,8 +764,38 @@ MX3 Maxant Bar Anti-bacterial Soap has xanthone, a natural potent antioxidant co
 
               const selectedBundle = ref('mx3-capsule-w-coffee-gift-set') // Default selection
               const showFixedButton = ref(false)
-              const selectedBundleValue = ref(1015) // Default to 6-boxes price
               const globalEventId = ref(Math.random().toString(36).substring(2, 15));
+
+              // Promo-aware pricing
+              const activePromo = ref(getActivePromo());
+              const isPromoActive = computed(() => activePromo.value !== null);
+
+              // Original prices
+              const originalPriceMap = {
+                'mx3-capsule-w-coffee-gift-set': 1500,
+                '1-kilo-pack-coffee-mix': 2175
+              };
+
+              // Computed price maps (with promo if active)
+              const productPriceMap = computed(() => {
+                if (!isPromoActive.value) return originalPriceMap;
+
+                const discounted = {};
+                for (const [key, price] of Object.entries(originalPriceMap)) {
+                  discounted[key] = calculateSalePrice(price, activePromo.value.discountPercentage);
+                }
+                return discounted;
+              });
+
+              // Computed selected bundle value
+              const selectedBundleValue = computed(() => {
+                return productPriceMap.value[selectedBundle.value];
+              });
+
+              // Computed selected bundle original price
+              const selectedBundleOriginalPrice = computed(() => {
+                return originalPriceMap[selectedBundle.value];
+              });
 
               const config = {
                 conversionEndpoint: "https://sg-aws.marketingmaster.io/apis_integrations/cform_handle_conversion_api",
@@ -744,8 +809,6 @@ MX3 Maxant Bar Anti-bacterial Soap has xanthone, a natural potent antioxidant co
 
               function selectBundle(bundle) {
                 selectedBundle.value = bundle
-                // Update the bundle value based on selection
-                selectedBundleValue.value = bundle === 'mx3-capsule-w-coffee-gift-set' ? 1500 :  1575
               }
 
               const conversionHelpers = {
@@ -880,7 +943,13 @@ MX3 Maxant Bar Anti-bacterial Soap has xanthone, a natural potent antioxidant co
                 checkoutLink,
                 selectBundle,
                 reviews,
-                showFixedButton
+                showFixedButton,
+                selectedBundleValue,
+                selectedBundleOriginalPrice,
+                isPromoActive,
+                activePromo,
+                productPriceMap,
+                originalPriceMap
               }
             }
           }).mount('#app')

@@ -146,7 +146,7 @@
         </style>
     </head>
 
-    <body id="app" class="bg-gray-100 flex flex-col items-center min-h-screen justify-center p-2 pt-10">
+    <body id="app" v-scope="csform()" class="bg-gray-100 flex flex-col items-center min-h-screen justify-center p-2 pt-10">
         <div id="loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
             <svg class="animate-spin -ml-1 mr-3 h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -183,7 +183,10 @@
                     <h2 class="text-xl font-bold text-gray-800 mb-1">Try MX3 Capsule 1 <br>Blister Pack <br></h2>
                     <div class="flex items-center mb-2">
                         <p class="text-gray-600 text-sm mr-3"><br>MX3 Natural Pure G. Mangostana Capsule is a natural food supplement that is rich in xanthone- a natural chemical extracted from the pericarp of mangosteen fruit (Garcinia Mangostana L.) </p>
-                        <div class="text-xl font-bold text-[#e63b60] bg-white px-2 py-1 rounded border border-[#e63b60] shadow-sm">₱145</div>
+                        <div class="text-xl font-bold text-[#e63b60] bg-white px-2 py-1 rounded border border-[#e63b60] shadow-sm">
+                            ₱{{ productList['upsell-blister-pack'].price }}
+                            <span v-if="productList['upsell-blister-pack'].originalPrice" class="text-sm line-through text-gray-500 ml-1">₱{{ productList['upsell-blister-pack'].originalPrice }}</span>
+                        </div>
                     </div>
 
                     <div class="flex items-center mb-4">
@@ -210,10 +213,10 @@
                 <div class="w-full space-y-4">
                     <div class="flex flex-col items-center space-y-2">
                         <div class="flex flex-col items-center">
-                            <span class="text-base">+₱145 to your order</span>
+                            <span class="text-base">+₱{{ productList['upsell-blister-pack'].price }} to your order</span>
                             <span class="text-xs">(MX3 Capsule Blister Pack)</span>
                         </div>
-                        <button @click="submitUpsell({upsellProduct: 'MX3 Capsule Blister Pack', upsellAmount: 145})" class="w-full bg-gradient-to-r from-[#e63b60] to-[#ff6b4d] hover:from-[#e63b60] hover:to-[#ff5a3a] text-white py-4 px-6 rounded-md font-medium transition-all duration-200 flex items-center justify-center pulse-animation">
+                        <button @click="submitUpsell({upsellProduct: 'MX3 Capsule Blister Pack', upsellAmount: productList['upsell-blister-pack'].price})" class="w-full bg-gradient-to-r from-[#e63b60] to-[#ff6b4d] hover:from-[#e63b60] hover:to-[#ff5a3a] text-white py-4 px-6 rounded-md font-medium transition-all duration-200 flex items-center justify-center pulse-animation">
                             <span class="text-lg">YES! Add to My Order</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2 bounce-animation" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />

@@ -301,27 +301,36 @@
                         <div class="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-2">
                           <div @click="selectBundle('capsule_coffee')" :class="{'border-indigo-500': selectedBundle === 'capsule_coffee'}" aria-label="capsule-coffee-bundle" class="relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-hidden bg-indigo-50">
                             <input type="radio" name="size-choice" value="capsule_coffee" class="sr-only" :checked="selectedBundle === 'capsule_coffee'">
-                            <p class="text-xl font-extrabold text-gray-900">₱1010<!-- <span style="text-decoration: line-through;" class="text-sm font-semibold">₱1,228</span> --></p>
+                            <p class="text-xl font-extrabold text-gray-900">
+                              ₱{{ productPriceMap['capsule_coffee'] }}
+                              <span v-if="isPromoActive" style="text-decoration: line-through;" class="text-sm font-semibold">₱{{ originalPriceMap['capsule_coffee'] }}</span>
+                            </p>
                             <p class="text-base font-medium text-gray-900">1 Box MX3 Coffee + 1 Box of MX3 Capsule</p>
                             <p class="mt-1 text-sm text-[#656e6f]">Great for daily drinkers or for sharing with the fam!</p>
                             <div v-if="selectedBundle === 'capsule_coffee'" class="pointer-events-none absolute -inset-px rounded-lg border-2 border-indigo-500" aria-hidden="true"></div>
-                            <!-- <img src="./assets/sale.png" alt="1 box of MX3 Capsule + 1 box of MX3 Coffee Mix" class="absolute top-5 right-2 animate-pulse size-12"> -->
+                            <img v-if="isPromoActive" src="./assets/sale.png" alt="1 box of MX3 Capsule + 1 box of MX3 Coffee Mix" class="absolute top-5 right-2 animate-pulse size-12">
                           </div>
                           <div @click="selectBundle('mx3-capsule-blister-pack')" :class="{'border-indigo-500': selectedBundle === 'mx3-capsule-blister-pack'}" aria-label="mx3-capsule-blister-pack" class="relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-hidden bg-indigo-50">
                             <input type="radio" name="size-choice" value="mx3-capsule-blister-pack" class="sr-only" :checked="selectedBundle === 'mx3-capsule-blister-pack'">
-                            <p class="text-xl font-extrabold text-gray-900">₱170<!-- <span style="text-decoration: line-through;" class="text-sm font-semibold">₱1,190</span> --></p>
+                            <p class="text-xl font-extrabold text-gray-900">
+                              ₱{{ productPriceMap['mx3-capsule-blister-pack'] }}
+                              <span v-if="isPromoActive" style="text-decoration: line-through;" class="text-sm font-semibold">₱{{ originalPriceMap['mx3-capsule-blister-pack'] }}</span>
+                            </p>
                             <p class="text-base font-medium text-gray-900">7 packs MX3 Capsule Blister Pack</p>
                             <p class="mt-1 text-sm text-[#656e6f]">Perfect for a health and wellness</p>
                             <div v-if="selectedBundle === 'mx3-capsule-blister-pack'" class="pointer-events-none absolute -inset-px rounded-lg border-2 border-indigo-500" aria-hidden="true"></div>
-                            <!-- <img src="./assets/sale.png" alt="5 boxes of MX3 Coffee Mix" class="absolute top-5 right-2 animate-pulse size-12"> -->
+                            <img v-if="isPromoActive" src="./assets/sale.png" alt="7 packs MX3 Capsule Blister Pack" class="absolute top-5 right-2 animate-pulse size-12">
                           </div>
                           <div @click="selectBundle('1-kilo-pack-coffee-mix')" :class="{'border-indigo-500': selectedBundle === '1-kilo-pack-coffee-mix'}" aria-label="capsule-coffee-bundle" class="relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-hidden bg-indigo-50">
                             <input type="radio" name="size-choice" value="1-kilo-pack-coffee-mix" class="sr-only" :checked="selectedBundle === '1-kilo-pack-coffee-mix'">
-                            <p class="text-xl font-extrabold text-gray-900">₱2175<!-- <span style="text-decoration: line-through;" class="text-sm font-semibold">₱1,188</span> --></p>
+                            <p class="text-xl font-extrabold text-gray-900">
+                              ₱{{ productPriceMap['1-kilo-pack-coffee-mix'] }}
+                              <span v-if="isPromoActive" style="text-decoration: line-through;" class="text-sm font-semibold">₱{{ originalPriceMap['1-kilo-pack-coffee-mix'] }}</span>
+                            </p>
                             <p class="text-base font-medium text-gray-900">1-Kilo Pack MX3 Coffee Mix</p>
                             <p class="mt-1 text-sm text-[#656e6f]">Great for daily drinkers or for sharing with the fam!</p>
                             <div v-if="selectedBundle === '1-kilo-pack-coffee-mix'" class="pointer-events-none absolute -inset-px rounded-lg border-2 border-indigo-500" aria-hidden="true"></div>
-                            <!-- <img src="./assets/sale.png" alt="5 boxes of MX3 Coffee Mix" class="absolute top-5 right-2 animate-pulse size-12"> -->
+                            <img v-if="isPromoActive" src="./assets/sale.png" alt="1-Kilo Pack MX3 Coffee Mix" class="absolute top-5 right-2 animate-pulse size-12">
                           </div>
                         </div>
                       </fieldset>
@@ -587,6 +596,35 @@
         <script>
           const { createApp, ref, computed, onMounted } = Vue
 
+          // Promo configuration
+          const PROMO_CONFIG = [
+            // Example promo - uncomment and modify dates to activate:
+            // {
+            //     name: "Christmas Sale 2025",
+            //     startDate: "2025-12-01T00:00:00+08:00",
+            //     endDate: "2025-12-31T23:59:59+08:00",
+            //     discountPercentage: 15
+            // }
+          ];
+
+          function getCurrentPhilippineTime() {
+            return new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Manila"}));
+          }
+
+          function getActivePromo() {
+            const now = getCurrentPhilippineTime();
+            const activePromos = PROMO_CONFIG.filter(promo => {
+              const start = new Date(promo.startDate);
+              const end = new Date(promo.endDate);
+              return now >= start && now <= end;
+            });
+            return activePromos.length > 0 ? activePromos[activePromos.length - 1] : null;
+          }
+
+          function calculateSalePrice(basePrice, discountPercentage) {
+            return Math.round(basePrice * (1 - discountPercentage / 100));
+          }
+
           createApp({
             setup() {
 
@@ -735,8 +773,18 @@
 
               const selectedBundle = ref('mx3-capsule-blister-pack') // Default selection
               const showFixedButton = ref(false)
-              const selectedBundleValue = ref(170) // Default to 7-packs price
               const globalEventId = ref(Math.random().toString(36).substring(2, 15));
+
+              // Promo detection
+              const activePromo = ref(getActivePromo());
+              const isPromoActive = computed(() => activePromo.value !== null);
+
+              // Base prices
+              const basePriceMap = {
+                'mx3-capsule-blister-pack': 170,
+                'capsule_coffee': 1010,
+                '1-kilo-pack-coffee-mix': 2175
+              };
 
               const config = {
                 conversionEndpoint: "https://sg-aws.marketingmaster.io/apis_integrations/cform_handle_conversion_api",
@@ -754,16 +802,33 @@
                 '1-kilo-pack-coffee-mix': './assets/mx3coffeemix1kilo_5000x.webp'
               }
 
-              const productPriceMap = {
-                'mx3-capsule-blister-pack': 170,
-                'capsule_coffee': 1010,
-                '1-kilo-pack-coffee-mix': 2175
-              }
+              // Promo-aware price maps
+              const productPriceMap = computed(() => {
+                if (!isPromoActive.value) return basePriceMap;
+
+                const saleMap = {};
+                Object.keys(basePriceMap).forEach(key => {
+                  saleMap[key] = calculateSalePrice(basePriceMap[key], activePromo.value.discountPercentage);
+                });
+                return saleMap;
+              });
+
+              const originalPriceMap = computed(() => {
+                if (!isPromoActive.value) return {};
+                return basePriceMap;
+              });
+
+              const selectedBundleValue = computed(() => {
+                return productPriceMap.value[selectedBundle.value] || basePriceMap['mx3-capsule-blister-pack'];
+              });
+
+              const selectedBundleOriginalPrice = computed(() => {
+                if (!isPromoActive.value) return null;
+                return originalPriceMap.value[selectedBundle.value];
+              });
 
               function selectBundle(bundle) {
                 selectedBundle.value = bundle
-                // Update the bundle value based on selection
-                selectedBundleValue.value = productPriceMap[bundle]
                 document.getElementById('productImage').src = productImagesMap[bundle]
               }
 
@@ -896,11 +961,16 @@
 
               return {
                 selectedBundleValue,
+                selectedBundleOriginalPrice,
                 selectedBundle,
                 checkoutLink,
                 selectBundle,
                 reviews,
-                showFixedButton
+                showFixedButton,
+                isPromoActive,
+                activePromo,
+                productPriceMap,
+                originalPriceMap
               }
             }
           }).mount('#app')

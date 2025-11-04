@@ -146,7 +146,7 @@
         </style>
     </head>
 
-    <body id="app" class="bg-gray-100 flex flex-col items-center min-h-screen justify-center p-2 pt-10">
+    <body id="app" v-scope="csform()" class="bg-gray-100 flex flex-col items-center min-h-screen justify-center p-2 pt-10">
         <div id="loader" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
             <svg class="animate-spin -ml-1 mr-3 h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -183,7 +183,7 @@
                     <h2 class="text-xl font-bold text-gray-800 mb-1">1-Kilo Pack MX3 Coffee Mix</h2>
                     <div class="flex items-center mb-2">
                         <p class="text-gray-600 text-sm mr-3">MX3 Coffee Mix combines the rich taste of coffee with added health benefits, making it a functional choice for those looking to enhance their daily coffee routine.</p>
-                        <div class="text-xl font-bold text-[#e63b60] bg-white px-2 py-1 rounded border border-[#e63b60] shadow-sm">₱1575.00</div>
+                        <div class="text-xl font-bold text-[#e63b60] bg-white px-2 py-1 rounded border border-[#e63b60] shadow-sm">₱{{ productList['1-kilo-pack-coffee-mix'].price }}<span v-if="productList['1-kilo-pack-coffee-mix'].originalPrice" class="text-sm line-through text-gray-500 ml-1">₱{{ productList['1-kilo-pack-coffee-mix'].originalPrice }}</span></div>
                     </div>
 
                     <div class="flex items-center mb-4">
@@ -212,10 +212,10 @@
                 <div class="w-full space-y-4">
                     <div class="flex flex-col items-center space-y-2">
                         <div class="flex flex-col items-center">
-                            <span class="text-base">+₱1575.00 to your order</span>
+                            <span class="text-base">+₱{{ productList['1-kilo-pack-coffee-mix'].price }} to your order</span>
                             <span class="text-xs">(1-Kilo Pack MX3 Coffee Mix)</span>
                         </div>
-                        <button @click="submitUpsell({upsellProduct: '1-Kilo Pack MX3 Coffee Mix', upsellAmount: 1575})" class="w-full bg-gradient-to-r from-[#e63b60] to-[#ff6b4d] hover:from-[#e63b60] hover:to-[#ff5a3a] text-white py-4 px-6 rounded-md font-medium transition-all duration-200 flex items-center justify-center pulse-animation">
+                        <button @click="submitUpsell({upsellProduct: '1-Kilo Pack MX3 Coffee Mix', upsellAmount: productList['1-kilo-pack-coffee-mix'].price})" class="w-full bg-gradient-to-r from-[#e63b60] to-[#ff6b4d] hover:from-[#e63b60] hover:to-[#ff5a3a] text-white py-4 px-6 rounded-md font-medium transition-all duration-200 flex items-center justify-center pulse-animation">
                             <span class="text-lg">YES! Add to My Order</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-2 bounce-animation" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />

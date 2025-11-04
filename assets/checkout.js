@@ -1,3 +1,49 @@
+// ===== PROMO CONFIGURATION =====
+// Add promo periods here with start date, end date, and discount percentage
+// Dates are in Philippine Time (Asia/Manila, UTC+8)
+const PROMO_CONFIG = [
+    // Example promo periods (uncomment and modify as needed):
+    // {
+    //     name: "Christmas Sale 2025",
+    //     startDate: "2025-12-01T00:00:00+08:00",
+    //     endDate: "2025-12-31T23:59:59+08:00",
+    //     discountPercentage: 15 // 15% off all products
+    // },
+    // {
+    //     name: "New Year Flash Sale",
+    //     startDate: "2026-01-01T00:00:00+08:00",
+    //     endDate: "2026-01-05T23:59:59+08:00",
+    //     discountPercentage: 20 // 20% off all products
+    // }
+];
+
+// Helper function to get current time in Philippine timezone
+function getCurrentPhilippineTime() {
+    return new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Manila"}));
+}
+
+// Helper function to check if a promo is currently active
+function getActivePromo() {
+    const now = getCurrentPhilippineTime();
+    const activePromos = PROMO_CONFIG.filter(promo => {
+        const start = new Date(promo.startDate);
+        const end = new Date(promo.endDate);
+        return now >= start && now <= end;
+    });
+    // If multiple promos are active, return the latest one (last in array)
+    return activePromos.length > 0 ? activePromos[activePromos.length - 1] : null;
+}
+
+// Helper function to calculate sale price based on discount percentage
+function calculateSalePrice(basePrice, discountPercentage) {
+    return Math.round(basePrice * (1 - discountPercentage / 100));
+}
+
+// Helper function to calculate original price from sale price (for display)
+function calculateOriginalPrice(salePrice, discountPercentage) {
+    return Math.round(salePrice / (1 - discountPercentage / 100));
+}
+
 function debounce(func, wait, immediate = false) {
     let timeout, result;
 
@@ -73,79 +119,97 @@ document.addEventListener("DOMContentLoaded", () => {
                 return data;
             }, {}),
         },
-        productList: {
-            "1-box": {
-                price: 185,
-                quantity: 1,
-                name: "1-box of MX3 Coffee Mix",
-                img: "./assets/mx3coffeefront_5000x.webp"
-            },
-            "6-boxes": {
-                price: 1176,
-                quantity: 6,
-                name: "6-boxes of MX3 Coffee Mix",
-                img: "./assets/6x-mx3-coffee-mix-box.png"
-            },
-            "mx3-capsule-blister-pack": {
-                price: 170,
-                quantity: 6,
-                name: "7-packs of MX3 Capsule Blister Pack",
-                img: "./assets/7x-mx3-capsule-bilster-pack.png"
-            },
-            "mx3-capsule-buy15-take1-free": {
-                price: 15150,
-                quantity: 1,
-                name: "1 MX3 Capsule buy 15 take 1 Free",
-                img: "./assets/capsulebuy15take1.jpg"
-            },
-            "mx3-capsule-w-coffee-gift-set": {
-                price: 1500,
-                quantity: 1,
-                name: "1 MX3 Capsule with Coffee Gift Set",
-                img: "./assets/MX3CapsulewithMX3CoffeeGiftSet_5000x.webp"
-            },
-            "1-kilo-pack-coffee-mix": {
-                price:  2175,
-                quantity: 1,
-                name: "1-Kilo Pack MX3 Coffee Mix",
-                img: "./assets/mx3coffeemix1kilo_5000x.webp"
-            },
-            "MX3-Plus-Capsule": {
-                price: 714,
-                quantity: 1,
-                name: "1 MX3 Plus Capsule",
-                img: "./assets/mx3plusfront_5000x.webp"
-            },
-            "mx3-capsule": {
-                price:  1575,
-                quantity: 1,
-                name: "1 MX3 Capsule",
-                img: "./assets/mx3 capsule.jpg"
-            },
-            "upsell-capsule-w-mx3-coffee-gift-set": {
-                price: 1500,
-                quantity: 1,
-                name: "1 MX3 Capsule with MX3 Coffee Gift Set",
-                img: "./assets/MX3CapsulewithMX3CoffeeGiftSet_5000x.webp"
-            },
-            "upsell-coffemix-buy11take1": {
-                price: 1958,
-                quantity: 1,
-                name: "1-box MX3 Plus",
-                img: "./assets/mx3coffeemix11_1_5000x.webp"
-            },
-            "upsell-blister-pack": {
-                price: 145,
-                quantity: 1,
-                name: "1 Capsule blister pack",
-                img: "./assets/cpasuleblisterpack.jpg"
-            },
-            "capsule_coffee": {
-                price: 1010,
-                quantity: 1,
-                name: "1 Box of MX3 Capsule + Free 1-box MX3 Coffee Mix",
-                img: "./assets/mx3capsule_coffeemix_5000x.webp"
-            },
+        // Product list with base prices - sale prices are calculated automatically based on active promo
+        get productList() {
+            const activePromo = getActivePromo();
+            const baseProducts = {
+                "1-box": {
+                    price: 185,
+                    quantity: 1,
+                    name: "1-box of MX3 Coffee Mix",
+                    img: "./assets/mx3coffeefront_5000x.webp"
+                },
+                "6-boxes": {
+                    price: 1176,
+                    quantity: 6,
+                    name: "6-boxes of MX3 Coffee Mix",
+                    img: "./assets/6x-mx3-coffee-mix-box.png"
+                },
+                "mx3-capsule-blister-pack": {
+                    price: 170,
+                    quantity: 6,
+                    name: "7-packs of MX3 Capsule Blister Pack",
+                    img: "./assets/7x-mx3-capsule-bilster-pack.png"
+                },
+                "mx3-capsule-buy15-take1-free": {
+                    price: 15150,
+                    quantity: 1,
+                    name: "1 MX3 Capsule buy 15 take 1 Free",
+                    img: "./assets/capsulebuy15take1.jpg"
+                },
+                "mx3-capsule-w-coffee-gift-set": {
+                    price: 1500,
+                    quantity: 1,
+                    name: "1 MX3 Capsule with Coffee Gift Set",
+                    img: "./assets/MX3CapsulewithMX3CoffeeGiftSet_5000x.webp"
+                },
+                "1-kilo-pack-coffee-mix": {
+                    price:  2175,
+                    quantity: 1,
+                    name: "1-Kilo Pack MX3 Coffee Mix",
+                    img: "./assets/mx3coffeemix1kilo_5000x.webp"
+                },
+                "MX3-Plus-Capsule": {
+                    price: 714,
+                    quantity: 1,
+                    name: "1 MX3 Plus Capsule",
+                    img: "./assets/mx3plusfront_5000x.webp"
+                },
+                "mx3-capsule": {
+                    price:  1575,
+                    quantity: 1,
+                    name: "1 MX3 Capsule",
+                    img: "./assets/mx3 capsule.jpg"
+                },
+                "upsell-capsule-w-mx3-coffee-gift-set": {
+                    price: 1500,
+                    quantity: 1,
+                    name: "1 MX3 Capsule with MX3 Coffee Gift Set",
+                    img: "./assets/MX3CapsulewithMX3CoffeeGiftSet_5000x.webp"
+                },
+                "upsell-coffemix-buy11take1": {
+                    price: 1958,
+                    quantity: 1,
+                    name: "1-box MX3 Plus",
+                    img: "./assets/mx3coffeemix11_1_5000x.webp"
+                },
+                "upsell-blister-pack": {
+                    price: 145,
+                    quantity: 1,
+                    name: "1 Capsule blister pack",
+                    img: "./assets/cpasuleblisterpack.jpg"
+                },
+                "capsule_coffee": {
+                    price: 1010,
+                    quantity: 1,
+                    name: "1 Box of MX3 Capsule + Free 1-box MX3 Coffee Mix",
+                    img: "./assets/mx3capsule_coffeemix_5000x.webp"
+                },
+            };
+
+            // Add sale prices if promo is active
+            if (activePromo) {
+                Object.keys(baseProducts).forEach(key => {
+                    baseProducts[key].originalPrice = baseProducts[key].price;
+                    baseProducts[key].salePrice = calculateSalePrice(baseProducts[key].price, activePromo.discountPercentage);
+                    baseProducts[key].discountPercentage = activePromo.discountPercentage;
+                    baseProducts[key].promoName = activePromo.name;
+                    // Update price to sale price
+                    baseProducts[key].price = baseProducts[key].salePrice;
+                });
+            }
+
+            return baseProducts;
         },
         barangays: [],
         meiliSearch: null,
