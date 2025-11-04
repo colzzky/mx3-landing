@@ -47,7 +47,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-    
+    <!-- Centralized Promo Configuration -->
+    <script src="./assets/checkout.js"></script>
+
     <!-- Meta Pixel Code -->
     <script>
       !function (f, b, e, v, n, t, s) {
@@ -593,35 +595,8 @@
         <script>
           const { createApp, ref, computed, onMounted } = Vue
 
-          // ===== PROMO HELPER FUNCTIONS =====
-          // Note: Keep these synchronized with assets/checkout.js
-          const PROMO_CONFIG = [
-              // Example promo periods (uncomment and modify as needed):
-              // {
-              //     name: "Christmas Sale 2025",
-              //     startDate: "2025-12-01T00:00:00+08:00",
-              //     endDate: "2025-12-31T23:59:59+08:00",
-              //     discountPercentage: 15 // 15% off all products
-              // }
-          ];
-
-          function getCurrentPhilippineTime() {
-              return new Date(new Date().toLocaleString("en-US", {timeZone: "Asia/Manila"}));
-          }
-
-          function getActivePromo() {
-              const now = getCurrentPhilippineTime();
-              const activePromos = PROMO_CONFIG.filter(promo => {
-                  const start = new Date(promo.startDate);
-                  const end = new Date(promo.endDate);
-                  return now >= start && now <= end;
-              });
-              return activePromos.length > 0 ? activePromos[activePromos.length - 1] : null;
-          }
-
-          function calculateSalePrice(basePrice, discountPercentage) {
-              return Math.round(basePrice * (1 - discountPercentage / 100));
-          }
+          // Promo config is now centralized in assets/checkout.js
+          // PROMO_CONFIG, getCurrentPhilippineTime(), getActivePromo(), and calculateSalePrice() are available globally
 
           createApp({
             setup() {
@@ -798,23 +773,46 @@
 
               // Computed product prices (with promo discount if active)
               const productPriceMap = computed(() => {
-                if (!isPromoActive.value) {
-                  return basePriceMap;
-                }
-
                 const saleMap = {};
                 Object.keys(basePriceMap).forEach(key => {
-                  saleMap[key] = calculateSalePrice(basePriceMap[key], activePromo.value.discountPercentage);
+                  // First check if product has always promo
+                  const alwaysPromo = getAlwaysPromoDiscount(key);
+
+                  if (alwaysPromo) {
+                    // Apply always promo discount
+                    saleMap[key] = calculateSalePrice(basePriceMap[key], alwaysPromo.discountPercentage);
+                  } else if (isPromoActive.value) {
+                    // Check if product is excluded from period promo
+                    if (isProductExcluded(key, activePromo.value)) {
+                      saleMap[key] = basePriceMap[key]; // Keep original price
+                    } else {
+                      saleMap[key] = calculateSalePrice(basePriceMap[key], activePromo.value.discountPercentage);
+                    }
+                  } else {
+                    saleMap[key] = basePriceMap[key]; // No promo, keep original
+                  }
                 });
                 return saleMap;
               });
 
               // Computed original prices for strikethrough display
               const originalPriceMap = computed(() => {
-                if (!isPromoActive.value) {
-                  return {};
-                }
-                return basePriceMap;
+                const origMap = {};
+                Object.keys(basePriceMap).forEach(key => {
+                  // First check if product has always promo
+                  const alwaysPromo = getAlwaysPromoDiscount(key);
+
+                  if (alwaysPromo) {
+                    // Always show strikethrough for always promo products
+                    origMap[key] = basePriceMap[key];
+                  } else if (isPromoActive.value) {
+                    // Only show strikethrough for non-excluded products in period promo
+                    if (!isProductExcluded(key, activePromo.value)) {
+                      origMap[key] = basePriceMap[key];
+                    }
+                  }
+                });
+                return origMap;
               });
 
               const selectedBundleValue = computed(() => {

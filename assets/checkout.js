@@ -7,13 +7,39 @@ const PROMO_CONFIG = [
     //     name: "Christmas Sale 2025",
     //     startDate: "2025-12-01T00:00:00+08:00",
     //     endDate: "2025-12-31T23:59:59+08:00",
-    //     discountPercentage: 15 // 15% off all products
+    //     discountPercentage: 15, // 15% off all products
+    //     excludeFromPromo: [] // Optional: product keys to exclude from this promo
     // },
     // {
     //     name: "New Year Flash Sale",
     //     startDate: "2026-01-01T00:00:00+08:00",
     //     endDate: "2026-01-05T23:59:59+08:00",
-    //     discountPercentage: 20 // 20% off all products
+    //     discountPercentage: 20, // 20% off all products
+    //     excludeFromPromo: ["mx3-capsule-buy15-take1-free", "1-kilo-pack-coffee-mix"] // Example: exclude specific products
+    // }
+    {
+        name: "test promo",
+        startDate: "2025-11-04T00:00:00+08:00",
+        endDate: "2025-11-05T23:59:59+08:00",
+        discountPercentage: 10, // 20% off all products
+        excludeFromPromo: ["capsule_coffee"] // No exclusions for this promo
+    }
+];
+
+// ===== ALWAYS PROMO PRODUCTS =====
+// Products that are permanently on sale, regardless of PROMO_CONFIG
+// These products will ALWAYS show discounted prices and strikethrough original prices
+const ALWAYS_PROMO_PRODUCTS = [
+    // Example:
+    // {
+    //     productKey: "1-box",
+    //     discountPercentage: 10,
+    //     promoName: "Everyday Low Price"
+    // },
+    // {
+    //     productKey: "upsell-blister-pack",
+    //     discountPercentage: 15,
+    //     promoName: "Special Offer"
     // }
 ];
 
@@ -42,6 +68,18 @@ function calculateSalePrice(basePrice, discountPercentage) {
 // Helper function to calculate original price from sale price (for display)
 function calculateOriginalPrice(salePrice, discountPercentage) {
     return Math.round(salePrice / (1 - discountPercentage / 100));
+}
+
+// Helper function to check if a product is excluded from a promo
+function isProductExcluded(productKey, promo) {
+    if (!promo || !promo.excludeFromPromo) return false;
+    return promo.excludeFromPromo.includes(productKey);
+}
+
+// Helper function to get always promo discount for a product
+function getAlwaysPromoDiscount(productKey) {
+    const alwaysPromo = ALWAYS_PROMO_PRODUCTS.find(item => item.productKey === productKey);
+    return alwaysPromo || null;
 }
 
 function debounce(func, wait, immediate = false) {
@@ -197,17 +235,35 @@ document.addEventListener("DOMContentLoaded", () => {
                 },
             };
 
-            // Add sale prices if promo is active
-            if (activePromo) {
-                Object.keys(baseProducts).forEach(key => {
+            // Apply discounts: Always promo takes precedence over period promos
+            Object.keys(baseProducts).forEach(key => {
+                // First check if product has always promo
+                const alwaysPromo = getAlwaysPromoDiscount(key);
+
+                if (alwaysPromo) {
+                    // Apply always promo discount
+                    baseProducts[key].originalPrice = baseProducts[key].price;
+                    baseProducts[key].salePrice = calculateSalePrice(baseProducts[key].price, alwaysPromo.discountPercentage);
+                    baseProducts[key].discountPercentage = alwaysPromo.discountPercentage;
+                    baseProducts[key].promoName = alwaysPromo.promoName;
+                    baseProducts[key].isAlwaysPromo = true;
+                    baseProducts[key].price = baseProducts[key].salePrice;
+                } else if (activePromo) {
+                    // Check if product is excluded from period promo
+                    if (isProductExcluded(key, activePromo)) {
+                        // Product is excluded - keep original price, don't show promo indicators
+                        return;
+                    }
+
+                    // Apply period promo discount
                     baseProducts[key].originalPrice = baseProducts[key].price;
                     baseProducts[key].salePrice = calculateSalePrice(baseProducts[key].price, activePromo.discountPercentage);
                     baseProducts[key].discountPercentage = activePromo.discountPercentage;
                     baseProducts[key].promoName = activePromo.name;
-                    // Update price to sale price
+                    baseProducts[key].isAlwaysPromo = false;
                     baseProducts[key].price = baseProducts[key].salePrice;
-                });
-            }
+                }
+            });
 
             return baseProducts;
         },
