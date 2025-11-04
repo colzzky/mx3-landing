@@ -75,22 +75,22 @@ document.addEventListener("DOMContentLoaded", () => {
         },
         productList: {
             "1-box": {
-                price: 218,
+                price: 185,
                 quantity: 1,
                 name: "1-box of MX3 Coffee Mix",
                 img: "./assets/mx3coffeefront_5000x.webp"
             },
-            "5-boxes": {
-                price: 1090,
-                quantity: 5,
-                name: "5-boxes of MX3 Coffee Mix",
-                img: "./assets/5x-mx3-coffee-mix-box.png"
+            "6-boxes": {
+                price: 1176,
+                quantity: 6,
+                name: "6-boxes of MX3 Coffee Mix",
+                img: "./assets/6x-mx3-coffee-mix-box.png"
             },
             "mx3-capsule-blister-pack": {
-                price: 1020,
+                price: 1015,
                 quantity: 6,
-                name: "6-packs of MX3 Capsule Blister Pack",
-                img: "./assets/6x-mx3-blister-pack.png"
+                name: "7-packs of MX3 Capsule Blister Pack",
+                img: "./assets/7x-mx3-capsule-bilster-pack.png"
             },
             "mx3-capsule-buy15-take1-free": {
                 price: 15150,
@@ -105,19 +105,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 img: "./assets/MX3CapsulewithMX3CoffeeGiftSet_5000x.webp"
             },
             "1-kilo-pack-coffee-mix": {
-                price:  2175,
+                price:  1575,
                 quantity: 1,
                 name: "1-Kilo Pack MX3 Coffee Mix",
                 img: "./assets/mx3coffeemix1kilo_5000x.webp"
             },
             "MX3-Plus-Capsule": {
-                price: 840,
+                price: 714,
                 quantity: 1,
                 name: "1 MX3 Plus Capsule",
                 img: "./assets/mx3plusfront_5000x.webp"
             },
             "mx3-capsule": {
-                price:  2175,
+                price:  1575,
                 quantity: 1,
                 name: "1 MX3 Capsule",
                 img: "./assets/mx3 capsule.jpg"
@@ -126,22 +126,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 price: 1500,
                 quantity: 1,
                 name: "1 MX3 Capsule with MX3 Coffee Gift Set",
-                upsell_url: "./upsell-capsule-w-mx3-coffee-gift-set.html",
                 img: "./assets/MX3CapsulewithMX3CoffeeGiftSet_5000x.webp"
             },
             "upsell-coffemix-buy11take1": {
                 price: 1958,
                 quantity: 1,
                 name: "1-box MX3 Plus",
-                upsell_url: "./upsell-coffemix-buy11take1.html",
                 img: "./assets/mx3coffeemix11_1_5000x.webp"
             },
             "upsell-blister-pack": {
-                price: 170,
+                price: 145,
                 quantity: 1,
                 name: "1 Capsule blister pack",
-                upsell_url: "./upsell-blister-pack.html",
                 img: "./assets/cpasuleblisterpack.jpg"
+            },
+            "capsule_coffee": {
+                price: 1010,
+                quantity: 1,
+                name: "1 Box of MX3 Capsule + Free 1-box MX3 Coffee Mix",
+                img: "./assets/mx3capsule_coffeemix_5000x.webp"
             },
         },
         barangays: [],
@@ -326,7 +329,7 @@ document.addEventListener("DOMContentLoaded", () => {
         getUpsellPath(bundle, isSecondLayer = false) {
             const upsellPaths = {
                 // Primary product upsells
-                "5-boxes": {
+                "6-boxes": {
                     primary: "./upsell-blister-pack.html",
                     secondary: "./upsell-mx3plus.html"
                 },
@@ -355,6 +358,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     secondary: "./upsell-blister-pack.html",
                 },
                 "mx3-capsule": {
+                    primary: "./upsell-mx3-coffee.html",
+                    secondary: "./upsell-blister-pack.html"
+                },
+                "capsule_coffee": {
                     primary: "./upsell-mx3-coffee.html",
                     secondary: "./upsell-blister-pack.html"
                 }

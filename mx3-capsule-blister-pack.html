@@ -182,7 +182,7 @@
           <a :href="checkoutLink" class="w-full">
             <div class="relative flex items-center justify-center">
               <span class="mr-1">CLICK TO BUY NOW - </span>
-              <span>{{ selectedBundle === 'mx3-capsule-blister-pack' ? '₱1020' : '₱ 2175' }}</span>
+              <span>(₱{{ parseFloat(selectedBundleValue).toFixed(2) || '₱1015'}})</span>
               <svg class="arrow-icon h-6 w-6 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
               </svg>
@@ -233,7 +233,7 @@
                   <h2 id="information-heading" class="sr-only">Product information</h2>
 
                   <div class="flex items-center">
-                    <p class="text-lg text-gray-900 sm:text-xl">₱1020 (6 packs)</p>
+                    <p class="text-lg text-gray-900 sm:text-xl">₱1015 (7 packs)</p>
 
                     <div class="ml-4 border-l border-gray-300 pl-4">
                       <h2 class="sr-only">Reviews</h2>
@@ -285,7 +285,7 @@
 
               <!-- Product image -->
               <div class="mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center">
-                <img id="productImage" src="./assets/6x-mx3-blister-pack.png" alt="Smooth coffee blend with low acidity, enriched with Vitamin C, Calcium, and Mangosteen extract (Garcinia Mangostana L.)." class="aspect-square w-full rounded-lg object-cover">
+                <img id="productImage" src="./assets/7x-mx3-capsule-bilster-pack.png" alt="Smooth coffee blend with low acidity, enriched with Vitamin C, Calcium, and Mangosteen extract (Garcinia Mangostana L.)." class="aspect-square w-full rounded-lg object-cover">
               </div>
 
               <!-- Product form -->
@@ -299,17 +299,25 @@
                       <fieldset>
                         <legend class="block text-sm font-medium text-gray-700">Choose Bundle:</legend>
                         <div class="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                          <div @click="selectBundle('capsule_coffee')" :class="{'border-indigo-500': selectedBundle === 'capsule_coffee'}" aria-label="capsule-coffee-bundle" class="relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-hidden bg-indigo-50">
+                            <input type="radio" name="size-choice" value="capsule_coffee" class="sr-only" :checked="selectedBundle === 'capsule_coffee'">
+                            <p class="text-xl font-extrabold text-gray-900">₱1010 <span style="text-decoration: line-through;" class="text-sm font-semibold">₱1,228</span></p>
+                            <p class="text-base font-medium text-gray-900">1 Box MX3 Coffee + 1 Box of MX3 Capsule</p>
+                            <p class="mt-1 text-sm text-[#656e6f]">Great for daily drinkers or for sharing with the fam!</p>
+                            <div v-if="selectedBundle === 'capsule_coffee'" class="pointer-events-none absolute -inset-px rounded-lg border-2 border-indigo-500" aria-hidden="true"></div>
+                            <img src="./assets/sale.png" alt="1 box of MX3 Capsule + 1 box of MX3 Coffee Mix" class="absolute top-5 right-2 animate-pulse size-12">
+                          </div>
                           <div @click="selectBundle('mx3-capsule-blister-pack')" :class="{'border-indigo-500': selectedBundle === 'mx3-capsule-blister-pack'}" aria-label="mx3-capsule-blister-pack" class="relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-hidden bg-indigo-50">
                             <input type="radio" name="size-choice" value="mx3-capsule-blister-pack" class="sr-only" :checked="selectedBundle === 'mx3-capsule-blister-pack'">
-                            <p class="text-xl font-extrabold text-gray-900">₱1020 <!--<span style="text-decoration: line-through;" class="text-sm font-semibold">₱1,020</span>--></p>
-                            <p class="text-base font-medium text-gray-900">6 packs MX3 Capsule Blister Pack</p>
+                            <p class="text-xl font-extrabold text-gray-900">₱1015 <span style="text-decoration: line-through;" class="text-sm font-semibold">₱1,190</span></p>
+                            <p class="text-base font-medium text-gray-900">7 packs MX3 Capsule Blister Pack</p>
                             <p class="mt-1 text-sm text-[#656e6f]">Perfect for a health and wellness</p>
                             <div v-if="selectedBundle === 'mx3-capsule-blister-pack'" class="pointer-events-none absolute -inset-px rounded-lg border-2 border-indigo-500" aria-hidden="true"></div>
-                            <!--<img src="./assets/sale.png" alt="5 boxes of MX3 Coffee Mix" class="absolute top-5 right-2 animate-pulse size-12">-->
+                            <img src="./assets/sale.png" alt="5 boxes of MX3 Coffee Mix" class="absolute top-5 right-2 animate-pulse size-12">
                           </div>
                           <div @click="selectBundle('1-kilo-pack-coffee-mix')" :class="{'border-indigo-500': selectedBundle === '1-kilo-pack-coffee-mix'}" aria-label="capsule-coffee-bundle" class="relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-hidden bg-indigo-50">
                             <input type="radio" name="size-choice" value="1-kilo-pack-coffee-mix" class="sr-only" :checked="selectedBundle === '1-kilo-pack-coffee-mix'">
-                            <p class="text-xl font-extrabold text-gray-900">₱ 2175 <span style="text-decoration: line-through;" class="text-sm font-semibold">₱1,188</span></p>
+                            <p class="text-xl font-extrabold text-gray-900">₱1575 <span style="text-decoration: line-through;" class="text-sm font-semibold">₱1,188</span></p>
                             <p class="text-base font-medium text-gray-900">1-Kilo Pack MX3 Coffee Mix</p>
                             <p class="mt-1 text-sm text-[#656e6f]">Great for daily drinkers or for sharing with the fam!</p>
                             <div v-if="selectedBundle === '1-kilo-pack-coffee-mix'" class="pointer-events-none absolute -inset-px rounded-lg border-2 border-indigo-500" aria-hidden="true"></div>
@@ -330,7 +338,7 @@
                       <a id="originalBuyButton" :href="checkoutLink" class="flex flex-col w-full items-center justify-center rounded-md border border-transparent bg-gradient-to-r from-[#e63b60] to-[#ff6b4d] px-8 py-4 text-xl font-bold text-white hover:from-[#e63b60] hover:to-[#ff5a3a] focus:ring-2 focus:ring-pink-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden shadow-lg transition-all duration-200">
                         <div class="relative flex items-center">
                           <span class="mr-1">CLICK TO BUY NOW - </span>
-                          <span class="mr-2">{{ selectedBundle === 'mx3-capsule-blister-pack' ? '₱1020' : '₱ 2175' }}</span>
+                          <span class="mr-2 text-base">(₱{{ parseFloat(selectedBundleValue).toFixed(2) || '₱1015'}})</span>
                           <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
                           </svg>
@@ -727,7 +735,7 @@
 
               const selectedBundle = ref('mx3-capsule-blister-pack') // Default selection
               const showFixedButton = ref(false)
-              const selectedBundleValue = ref(1020) // Default to 6-packs price
+              const selectedBundleValue = ref(1015) // Default to 7-packs price
               const globalEventId = ref(Math.random().toString(36).substring(2, 15));
 
               const config = {
@@ -741,14 +749,21 @@
               })
 
               const productImagesMap = {
-                'mx3-capsule-blister-pack': './assets/6x-mx3-blister-pack.png',
+                'mx3-capsule-blister-pack': './assets/7x-mx3-capsule-bilster-pack.png',
+                'capsule_coffee': './assets/mx3capsule_coffeemix_5000x.webp',
                 '1-kilo-pack-coffee-mix': './assets/mx3coffeemix1kilo_5000x.webp'
+              }
+
+              const productPriceMap = {
+                'mx3-capsule-blister-pack': 1015,
+                'capsule_coffee': 1010,
+                '1-kilo-pack-coffee-mix': 1575
               }
 
               function selectBundle(bundle) {
                 selectedBundle.value = bundle
                 // Update the bundle value based on selection
-                selectedBundleValue.value = bundle === 'mx3-capsule-blister-pack' ? 1020 :  2175
+                selectedBundleValue.value = productPriceMap[bundle]
                 document.getElementById('productImage').src = productImagesMap[bundle]
               }
 
@@ -880,6 +895,7 @@
               })
 
               return {
+                selectedBundleValue,
                 selectedBundle,
                 checkoutLink,
                 selectBundle,
