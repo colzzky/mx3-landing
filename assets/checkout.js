@@ -18,10 +18,17 @@ const PROMO_CONFIG = [
     //     excludeFromPromo: ["mx3-capsule-buy15-take1-free", "1-kilo-pack-coffee-mix"] // Example: exclude specific products
     // }
     {
-        name: "test promo",
-        startDate: "2025-11-04T00:00:00+08:00",
-        endDate: "2025-11-05T23:59:59+08:00",
-        discountPercentage: 10, // 20% off all products
+        name: "11.11 Promo",
+        startDate: "2025-11-11T00:00:00+08:00",
+        endDate: "2025-11-13T23:59:59+08:00",
+        discountPercentage: 15, // 15% off all products
+        excludeFromPromo: ["capsule_coffee"] // No exclusions for this promo
+    },
+    {
+        name: "November Payday Sale",
+        startDate: "2025-11-14T00:00:00+08:00",
+        endDate: "2025-11-16T23:59:59+08:00",
+        discountPercentage: 10, // 10% off all products
         excludeFromPromo: ["capsule_coffee"] // No exclusions for this promo
     }
 ];
@@ -168,7 +175,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     img: "./assets/mx3coffeefront_5000x.webp"
                 },
                 "6-boxes": {
-                    price: 1176,
+                    price: 1306,
                     quantity: 6,
                     name: "6-boxes of MX3 Coffee Mix",
                     img: "./assets/6x-mx3-coffee-mix-box.png"
