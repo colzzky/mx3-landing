@@ -18,16 +18,16 @@ const PROMO_CONFIG = [
     //     excludeFromPromo: ["mx3-capsule-buy15-take1-free", "1-kilo-pack-coffee-mix"] // Example: exclude specific products
     // }
     {
-        name: "11.11 Promo",
-        startDate: "2025-11-11T00:00:00+08:00",
-        endDate: "2025-11-13T23:59:59+08:00",
-        discountPercentage: 15, // 15% off all products
+        name: "Jan 2026 Payday Sale",
+        startDate: "2026-01-14T00:00:00+08:00",
+        endDate: "2026-01-16T23:59:59+08:00",
+        discountPercentage: 10, // 15% off all products
         excludeFromPromo: ["capsule_coffee"] // No exclusions for this promo
     },
     {
-        name: "November Payday Sale",
-        startDate: "2025-11-14T00:00:00+08:00",
-        endDate: "2025-11-16T23:59:59+08:00",
+        name: "Jan 2026 Payday Sale",
+        startDate: "2026-01-29T00:00:00+08:00",
+        endDate: "2026-01-31T23:59:59+08:00",
         discountPercentage: 10, // 10% off all products
         excludeFromPromo: ["capsule_coffee"] // No exclusions for this promo
     }
@@ -1004,9 +1004,15 @@ document.addEventListener("DOMContentLoaded", () => {
             });
             return client.index(index);
         },
+        closeAllDropdowns() {
+            this.showBarangayDropdown = false;
+            this.showCityDropdown = false;
+            this.showProvinceDropdown = false;
+        },
         getBarangays: debounce(function () {
             if (this.formData.barangay && this.formData.barangay.length > 1) {
                 this.isBarangaySearchLoading = true;
+                this.closeAllDropdowns();
                 this.showBarangayDropdown = true;
                 this.initMeiliSearch().search(this.formData.barangay).then((res) => {
                     // Remove duplicates by city name
@@ -1035,6 +1041,7 @@ document.addEventListener("DOMContentLoaded", () => {
         getCities: debounce(function () {
             if (this.formData.city && this.formData.city.length > 1) {
                 this.isCitySearchLoading = true;
+                this.closeAllDropdowns();
                 this.showCityDropdown = true;
                 this.initMeiliSearch().search(this.formData.city, {
                     attributesToSearchOn: ['city_municipality', 'province', 'region']
@@ -1069,6 +1076,7 @@ document.addEventListener("DOMContentLoaded", () => {
         getProvinces: debounce(function () {
             if (this.formData.province && this.formData.province.length > 1) {
                 this.isProvinceSearchLoading = true;
+                this.closeAllDropdowns();
                 this.showProvinceDropdown = true;
                 this.initMeiliSearch().search(this.formData.province, {
                     attributesToSearchOn: ['province', 'region']
